@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   nginx:
     image: nginx:1.21.1
@@ -10,24 +8,32 @@ services:
       - ./src:/var/www/
     depends_on:
       - php
-
+    networks:
+      - app-network
   php:
     build: ./docker/php
+    user: "1000:1000"
     volumes:
       - ./src:/var/www/
+    depends_on:
+      - mailhog
+    networks:
+      - app-network
 
   mysql:
-    image: mysql:8.0.26
+    image: mysql:8.0
+    platform: linux/arm64
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: laravel_db
       MYSQL_USER: laravel_user
       MYSQL_PASSWORD: laravel_pass
-    command:
-      mysqld --default-authentication-plugin=mysql_native_password
+    command: mysqld --default-authentication-plugin=mysql_native_password
     volumes:
       - ./docker/mysql/data:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - app-network
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -40,3 +46,16 @@ services:
       - mysql
     ports:
       - 8080:80
+    networks:
+      - app-network
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
