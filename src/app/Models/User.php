@@ -45,4 +45,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+    public function item()
+    {
+        return $this->hasMany(Item::class);
+    }
+    public function purchase()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+    public function favorite()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }
