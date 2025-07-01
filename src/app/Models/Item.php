@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 class Item extends Model
@@ -31,7 +32,7 @@ class Item extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function category()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }
