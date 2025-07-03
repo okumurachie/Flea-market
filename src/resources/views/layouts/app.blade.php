@@ -12,6 +12,11 @@
 </head>
 
 <body>
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
     <div class="app">
         <header class="header">
             <img src="{{asset('images/logo.svg')}}" alt="header_logo" class="header_logo">
@@ -21,7 +26,10 @@
                 <input type="text" class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{request('keyword')}}">
             </form>
             <div class="header__link">
-                <a href="" class="login">ログイン</a>
+                <form class="form" action="/logout" method="post">
+                    @csrf
+                    <button class="header-nav__button">ログアウト</button>
+                </form>
                 <a href="" class="mypage">マイページ</a>
                 <a href="" class="put-up_items">出品</a>
             </div>

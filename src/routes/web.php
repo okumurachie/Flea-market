@@ -18,3 +18,8 @@ use App\Models\Purchase;
 */
 
 Route::get('/', [UserController::class, 'index']);
+
+//機能実装後、削除する
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+});

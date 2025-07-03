@@ -47,7 +47,7 @@ body {
     grid-column: 3;
     padding-right: 30px;
 }
-.login,
+.form,
 .mypage,
 .put-up_items {
     display: inline-block;
@@ -57,12 +57,19 @@ body {
     cursor: pointer;
     text-align: center;
 }
-.login,
+.form,
 .mypage{
     width: 135px;
     height: 47px;
     line-height: 47px;
     color: #ffffff;
+}
+.header-nav__button{
+    border: none;
+    font-size: 24px;
+    font-weight: 400;
+    color: #ffffff;
+    background-color: #000000;
 }
 .put-up_items{
     width: 100px;
