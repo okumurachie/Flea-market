@@ -19,6 +19,8 @@ use App\Models\Purchase;
 
 Route::get('/', [UserController::class, 'index']);
 
+Route::get('/mypage/profile', [UserController::class, 'profile']);
+
 //機能実装後、削除する
 Route::get('/email/verify', function () {
     return view('auth.verify-email');

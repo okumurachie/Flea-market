@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create('ja_JP');
         $testUser = User::create([
             'id' => 1,
             'name' => 'Test User',
@@ -28,15 +29,27 @@ class UsersTableSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        $profileData = Profile::factory()->make([
+        Profile::create([
             'user_id' => $testUser->id,
-        ])->attributesToArray();
-
-        Profile::create($profileData);
+            'post_code' => $faker->numerify('###-####'),
+            'address' => $faker->address(),
+            'building' => $faker->secondaryAddress(),
+            'image' => 'storage/images/ProfilesSeeder/user1.png',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         User::factory()
             ->count(4)
-            ->has(Profile::factory())
-            ->create();
+            ->create()
+            ->each(function ($user) use ($faker) {
+                Profile::create([
+                    'user_id' => $user->id,
+                    'post_code' => $faker->numerify('###-####'),
+                    'address' => $faker->address,
+                    'building' => $faker->secondaryAddress,
+                    'image' => 'storage/images/ProfilesSeeder/user' . $user->id . '.png',
+                ]);
+            });
     }
 }
