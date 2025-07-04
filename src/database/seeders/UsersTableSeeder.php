@@ -31,6 +31,7 @@ class UsersTableSeeder extends Seeder
 
         Profile::create([
             'user_id' => $testUser->id,
+            'user_name' => 'Test User',
             'post_code' => $faker->numerify('###-####'),
             'address' => $faker->address(),
             'building' => $faker->secondaryAddress(),
@@ -45,6 +46,7 @@ class UsersTableSeeder extends Seeder
             ->each(function ($user) use ($faker) {
                 Profile::create([
                     'user_id' => $user->id,
+                    'user_name' => $user->name,
                     'post_code' => $faker->numerify('###-####'),
                     'address' => $faker->address,
                     'building' => $faker->secondaryAddress,

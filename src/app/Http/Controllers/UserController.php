@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Purchase;
@@ -19,8 +21,8 @@ class UserController extends Controller
     }
     public function profile()
     {
-        $users = User::find('id');
-        $profiles = Profile::with('user')->get();
-        return view('profile', compact('users', 'profiles'));
+        $user = Auth::user();
+        $profile = $user->profile ?? null;
+        return view('profile', compact('user', 'profile'));
     }
 }

@@ -44,7 +44,7 @@
             </div>
             <div class="profile-form__group">
                 <label for="name" class="profile-form__label">ユーザー名</label>
-                <input type="text" class="profile-form__input" name="name" id="name" value="{{ old('name') }}">
+                <input type="text" class="profile-form__input" name="name" id="name" value="{{ old('name', $profile->name ?? '') }}">
                 <p class="profile-form__error-message">
                     @error('name')
                     {{ $message }}
@@ -53,25 +53,25 @@
             </div>
             <div class="profile-form__group">
                 <label for="post_code" class="profile-form__label">郵便番号</label>
-                <input type="text" class="profile-form__input" name="post_code" pattern="\d{3}-?\d{4}" maxlength="8" placeholder="例：123-4567" value="{{ old('post_code') }}">
+                <input type="text" class="profile-form__input" name="post_code" id="post_code" pattern="\d{3}-?\d{4}" maxlength="8" placeholder="例：123-4567" value="{{ old('post_code', $profile->post_code ?? '' ) }}">
                 <p class="profile-form__error-message">
-                    @error('email')
+                    @error('post_code')
                     {{ $message }}
                     @enderror
                 </p>
             </div>
             <div class="profile-form__group">
                 <label for="address" class="profile-form__label">住所</label>
-                <input type="text" class="profile-form__input" name="address" value="{{ old('address') }}">
+                <input type="text" class="profile-form__input" name="address" id="address" value="{{ old('address', $profile->address ?? '') }}">
                 <p class="profile-form__error-message">
-                    @error('password')
+                    @error('address')
                     {{ $message }}
                     @enderror
                 </p>
             </div>
             <div class="profile-form__group">
                 <label for="building" class="profile-form__label">建物名</label>
-                <input type="text" class="profile-form__input" name="building" value="{{ old('building') }}">
+                <input type="text" class="profile-form__input" name="building" value="{{ old('building', $profile->building ?? '') }}">
             </div>
             <input type="submit" class="profile-form__btn btn" value="更新する">
         </form>
