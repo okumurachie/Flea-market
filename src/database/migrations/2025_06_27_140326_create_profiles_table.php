@@ -21,6 +21,7 @@ class CreateProfilesTable extends Migration
             $table->string('address');
             $table->string('building')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('profile_completed')->default(false);
             $table->timestamps();
         });
     }

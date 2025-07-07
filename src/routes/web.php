@@ -19,9 +19,10 @@ use App\Models\Purchase;
 
 Route::get('/', [UserController::class, 'index']);
 
-Route::get('/mypage/profile', [UserController::class, 'profile']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mypage/profile', [UserController::class, 'profile']);
+    Route::post('/profile', [UserController::class, 'store'])->name('profile/store');
+    Route::put('/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
+});
 
 //機能実装後、削除する
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-});

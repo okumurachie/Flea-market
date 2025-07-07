@@ -21,7 +21,6 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         $request = new RegisterRequest();
-        // $request->merge($input);
 
         $validator = Validator::make($input, (new RegisterRequest())->rules());
         $validator->validate();
@@ -32,7 +31,6 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
-        event(new Registered($user));
         return $user;
     }
 }

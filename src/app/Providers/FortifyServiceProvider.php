@@ -17,6 +17,8 @@ use App\Http\Requests\LoginRequest;
 use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use App\Actions\Fortify\CustomRegisterResponse;
+use App\Actions\Fortify\CustomLoginResponse;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -26,16 +28,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(RegisterResponse::class, CustomRegisterResponse::class);
-        $this->app->singleton(LoginResponse::class, function () {
-            return new class implements LoginResponse {
-                public function toResponse($request)
-                {
-                    return redirect()->intended(
-                        $request->user()->hasVerifiedEmail() ? '/' : '/email/verify'
-                    )->with('message', 'ログインしました');
-                }
-            };
-        });
+        $this->app->singleton(LoginResponse::class, CustomLoginResponse::class);
     }
 
     /**
@@ -57,6 +50,7 @@ class FortifyServiceProvider extends ServiceProvider
         // RateLimiter::for('two-factor', function (Request $request) {
         //     return Limit::perMinute(5)->by($request->session()->get('login.id'));
         // });
+
         Fortify::registerView(function () {
             return view('auth.register');
         });

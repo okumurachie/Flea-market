@@ -26,10 +26,14 @@
                 <input type="text" class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{request('keyword')}}">
             </form>
             <div class="header__link">
+                @if (Auth::check())
                 <form class="form" action="/logout" method="post">
                     @csrf
                     <button class="header-nav__button">ログアウト</button>
                 </form>
+                @else
+                <a href="/login" class="for-login-form">ログイン</a>
+                @endif
                 <a href="" class="mypage">マイページ</a>
                 <a href="" class="put-up_items">出品</a>
             </div>

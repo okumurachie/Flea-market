@@ -8,8 +8,15 @@
 <div class="profile-form">
     <h2 class="profile-form__heading">プロフィール設定</h2>
     <div class="profile-content-form">
-        <form class="profile-form__form" action="" method="post" enctype="multipart/form-data">
+        <form
+            class="profile-form__form"
+            action="{{isset($profile) ? route('profile.update', $profile->id) : route('profile/store')}}"
+            method="post"
+            enctype="multipart/form-data">
             @csrf
+            @if(isset($profile))
+            @method('put')
+            @endif
             <div class="profile-image-form__group">
                 <div class="product-form__image__input">
                     @if(empty($profile->image))
