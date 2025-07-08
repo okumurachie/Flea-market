@@ -8,10 +8,13 @@
 <div class="market_content">
     <div class="market_content__inner">
         <div class="lists">
-            <a href="" class="recommend">おすすめ</a>
-            <a href="" class="my_list">マイリスト</a>
+            <a href="/?tab=recommend " class="recommend {{ $tab === 'recommend' ? 'active' : '' }}">おすすめ</a>
+            <a href="/?tab=mylist" class="my_list {{ $tab === 'mylist' ? 'active' : '' }}">マイリスト</a>
         </div>
         <div class="content__box">
+            @if($items->isEmpty())
+            <p>表示する商品がありません</p>
+            @else
             @foreach($items as $item)
             <a href="" class="content__id">
                 <div class="content__box-item">
@@ -29,10 +32,13 @@
                 </div>
             </a>
             @endforeach
+            @endif
         </div>
     </div>
 </div>
+@if(method_exists($items, 'links'))
 <div class="pagination">
     {{$items->appends(request()->except('page'))->links('vendor.pagination.default')}}
 </div>
+@endif
 @endsection

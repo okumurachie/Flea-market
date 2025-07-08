@@ -12,12 +12,22 @@ use App\Models\Profile;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        $items = Item::with('user', 'purchase')->Paginate(8)->appends(request()->query());
-        return view('index', compact('users', 'items'));
+        $tab = $request->query('tab', 'recommend');
+        $user = Auth::user();
+        $items = Item::with(['user', 'purchase'])->latest();
+        if ($tab === 'mylist' && $user) {
+            $items = $user->favorite()->with(['user', 'purchase'])->latest()->paginate(8)->appends(request()->except('page'));
+        } elseif ($tab === 'mylist' && !$user) {
+            $items = collect();
+        } else {
+            $items = Item::with(['user', 'purchase'])->latest()->paginate(8)->appends(request()->except('page'));
+        }
+
+        return view('index', compact('items', 'tab'));
     }
+
     public function profile()
     {
         $user = Auth::user();
