@@ -16,6 +16,20 @@ use App\Models\Purchase;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    $user = $request->user();
+    $profile = $user->profile;
+
+    if (!$profile || !$profile->profile_completed) {
+        return redirect('/mypage/profile');
+    }
+
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/', [UserController::class, 'index']);
 
