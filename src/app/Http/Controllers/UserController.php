@@ -15,9 +15,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        $Items = Item::with('user')->get();
-        $Items = Item::with('purchase')->get();
-        return view('index', compact('users'));
+        $items = Item::with('user', 'purchase')->Paginate(8)->appends(request()->query());
+        return view('index', compact('users', 'items'));
     }
     public function profile()
     {
@@ -34,11 +33,11 @@ class UserController extends Controller
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/images/profiles/', $fileName);
+            $file->storeAs('public/images/profiles/', $fileName);
             $profileData['image'] = 'storage/images/profiles/' . $fileName;
         }
+        $profileData['profile_completed'] = true;
         $profile = $user->profile()->create($profileData);
-        $user->profile_completed = true;
         $user->save();
         return redirect('/')->with('message', 'プロフィールを設定しました');
     }
@@ -46,19 +45,27 @@ class UserController extends Controller
     public function update(ProfileRequest $request, $id)
     {
         $profile = Profile::findOrFail($id);
-        $profile->update(
-            $request->except('image'),
-        );
-        if ($profile->image) {
-            $oldImagePath = str_replace('storage/', 'public/', $profile->image);
-            if (\Storage::exists($oldImagePath)) {
-                \Storage::delete($oldImagePath);
+
+        if ($request->hadFile('image')) {
+            if ($profile->image) {
+                $oldImagePath = str_replace('storage/', 'public/', $profile->image);
+                if (\Storage::exists($oldImagePath)) {
+                    \Storage::delete($oldImagePath);
+                }
             }
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/images/profiles', $fileName);
+            $profile->image = 'storage/images/profiles' . $fileName;
         }
-        $file = $request->file('image');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('public/images', $fileName);
-        $profile->image = 'storage/images/profiles' . $fileName;
+        $profile->user_name = $request->input('user_name');
+        $profile->post_code = $request->input('post_code');
+        $profile->address = $request->input('address');
+        $profile->building = $request->input('building');
+
+        // 必要に応じてここで profile_completed を更新
+        $profile->profile_completed = true;
+
         $profile->save();
 
         return redirect('/')->with('message', 'プロフィールを更新しました');

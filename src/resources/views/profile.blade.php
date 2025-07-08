@@ -45,22 +45,22 @@
                 </div>
                 <p class="profile-form__error-message">
                     @error('image')
-                    {{ $message }}
+                    {{ $message->first('image') }}
                     @enderror
                 </p>
             </div>
             <div class="profile-form__group">
                 <label for="name" class="profile-form__label">ユーザー名</label>
-                <input type="text" class="profile-form__input" name="name" id="name" value="{{ old('name', $profile->name ?? '') }}">
+                <input type="text" class="profile-form__input" name="user_name" id="user_name" value="{{ old('user_name', $profile->user_name ?? '') }}">
                 <p class="profile-form__error-message">
-                    @error('name')
+                    @error('user_name')
                     {{ $message }}
                     @enderror
                 </p>
             </div>
             <div class="profile-form__group">
                 <label for="post_code" class="profile-form__label">郵便番号</label>
-                <input type="text" class="profile-form__input" name="post_code" id="post_code" pattern="\d{3}-?\d{4}" maxlength="8" placeholder="例：123-4567" value="{{ old('post_code', $profile->post_code ?? '' ) }}">
+                <input type="text" class="profile-form__input" name="post_code" id="post_code" maxlength="8" placeholder="例：123-4567" value="{{ old('post_code', $profile->post_code ?? '' ) }}">
                 <p class="profile-form__error-message">
                     @error('post_code')
                     {{ $message }}

@@ -12,9 +12,27 @@
             <a href="" class="my_list">マイリスト</a>
         </div>
         <div class="content__box">
-            <h1 class="items">ここに商品が入ります。</h1>
+            @foreach($items as $item)
+            <a href="" class="content__id">
+                <div class="content__box-item">
+                    <div class="content__box__inner">
+                        <div class="content__img">
+                            <img src="{{asset($item->item_image)}}" alt="{{$item->item_image}}">
+                        </div>
+                        <div class="content__name">
+                            <p>{{$item->item_name}}</p>
+                        </div>
+                        @if($item->purchases)
+                        <h2 class="sold">Sold</h2>
+                        @endif
+                    </div>
+                </div>
+            </a>
+            @endforeach
         </div>
     </div>
-
+</div>
+<div class="pagination">
+    {{$items->appends(request()->except('page'))->links('vendor.pagination.default')}}
 </div>
 @endsection
