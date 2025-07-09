@@ -36,6 +36,7 @@ class UsersTableSeeder extends Seeder
             'address' => $faker->address(),
             'building' => $faker->secondaryAddress(),
             'image' => 'storage/images/ProfilesSeeder/user1.png',
+            'profile_completed' => true,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -48,9 +49,10 @@ class UsersTableSeeder extends Seeder
                     'user_id' => $user->id,
                     'user_name' => $user->name,
                     'post_code' => $faker->numerify('###-####'),
-                    'address' => $faker->address,
-                    'building' => $faker->secondaryAddress,
+                    'address' => $faker->address(),
+                    'building' => $faker->secondaryAddress(),
                     'image' => 'storage/images/ProfilesSeeder/user' . $user->id . '.png',
+                    'profile_completed' => true,
                 ]);
             });
     }

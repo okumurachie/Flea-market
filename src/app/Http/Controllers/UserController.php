@@ -15,16 +15,27 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'recommend');
+        $keyword = $request->query('keyword');
         $user = Auth::user();
-        $items = Item::with(['user', 'purchase'])->latest();
-        if ($tab === 'mylist' && $user) {
-            $items = $user->favorite()->with(['user', 'purchase'])->latest()->paginate(8)->appends(request()->except('page'));
-        } elseif ($tab === 'mylist' && !$user) {
-            $items = collect();
-        } else {
-            $items = Item::with(['user', 'purchase'])->latest()->paginate(8)->appends(request()->except('page'));
-        }
 
+        if ($tab === 'mylist') {
+            if ($user) {
+                $items = $user->favorites()
+                    ->with(['user', 'purchase'])
+                    ->KeywordSearch($keyword)
+                    ->latest()
+                    ->paginate(8)
+                    ->appends($request->except('page'));
+            } else {
+                $items = collect();
+            }
+        } else {
+            $items = Item::with(['user', 'purchase'])
+                ->KeywordSearch($keyword)
+                ->latest()
+                ->paginate(8)
+                ->appends(request()->except('page'));
+        }
         return view('index', compact('items', 'tab'));
     }
 
@@ -46,9 +57,9 @@ class UserController extends Controller
             $file->storeAs('public/images/profiles/', $fileName);
             $profileData['image'] = 'storage/images/profiles/' . $fileName;
         }
-        $profileData['profile_completed'] = true;
         $profile = $user->profile()->create($profileData);
-        $user->save();
+        $profile->update(['profile_completed' => true]);
+
         return redirect('/')->with('message', 'プロフィールを設定しました');
     }
 

@@ -21,9 +21,9 @@
         <header class="header">
             <img src="{{asset('images/logo.svg')}}" alt="header_logo" class="header_logo">
             @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
-            <form action="" class="search_field">
-                @csrf
-                <input type="text" class="search-form__keyword-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{request('keyword')}}">
+            <form action="/" class="search_field" method="get">
+                <input type="hidden" name="tab" value="{{ request('tab') }}">
+                <input type="text" class="search-form__keyword-input" name="keyword" placeholder="なにをお探しですか？" value="{{request('keyword')}}">
             </form>
             <div class="header__link">
                 @if (Auth::check())

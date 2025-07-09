@@ -9,7 +9,7 @@
     <div class="market_content__inner">
         <div class="lists">
             <a href="/?tab=recommend " class="recommend {{ $tab === 'recommend' ? 'active' : '' }}">おすすめ</a>
-            <a href="/?tab=mylist" class="my_list {{ $tab === 'mylist' ? 'active' : '' }}">マイリスト</a>
+            <a href="/?tab=mylist&keyword{{urlencode(request('keyword'))}}" class="my_list {{ $tab === 'mylist' ? 'active' : '' }}">マイリスト</a>
         </div>
         <div class="content__box">
             @if($items->isEmpty())

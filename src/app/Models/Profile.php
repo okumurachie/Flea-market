@@ -14,6 +14,7 @@ class Profile extends Model
         'address',
         'building',
         'image',
+        'profile_completed',
     ];
     public function user()
     {

@@ -78,7 +78,7 @@
             </div>
             <div class="profile-form__group">
                 <label for="building" class="profile-form__label">建物名</label>
-                <input type="text" class="profile-form__input" name="building" value="{{ old('building', $profile->building ?? '') }}">
+                <input type="text" class="profile-form__input" name="building" id="building" value="{{ old('building', $profile->building ?? '') }}">
             </div>
             <input type="submit" class="profile-form__btn btn" value="更新する">
         </form>
