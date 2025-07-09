@@ -49,11 +49,22 @@ class Item extends Model
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
     }
 
+    // app/Models/Item.php
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($item) {
+            $item->item_name_normalized = normalizeSearchString($item->item_name);
+        });
+    }
     public function scopeKeywordSearch($query, $keyword)
     {
         if (!empty($keyword)) {
-            $query->where(function ($subquery) use ($keyword) {
-                $subquery->where('item_name', 'like', '%' . $keyword . '%')
+            $normalized = normalizeSearchString($keyword);
+            $query->where(function ($subquery) use ($keyword, $normalized) {
+                $subquery->where('item_name_normalized', 'like', '%' . $normalized . '%')
                     ->orWhere('description', 'like', '%' . $keyword . '%');
             });
         }
