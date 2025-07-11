@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FleaMarket</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/sanitize.css')}}">
     <link rel="stylesheet" href="{{ asset('css/common.css')}}">
     @yield('css')
@@ -19,7 +20,11 @@
     @endif
     <div class="app">
         <header class="header">
-            <img src="{{asset('images/logo.svg')}}" alt="header_logo" class="header_logo">
+            <div class="header_logo__group">
+                <a href="{{ route('home') }}" class="go-to-home">
+                    <img src="{{asset('images/logo.svg')}}" alt="header_logo" class="header_logo">
+                </a>
+            </div>
             @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
             <form action="/" class="search_field" method="get">
                 <input type="hidden" name="tab" value="{{ request('tab') }}">

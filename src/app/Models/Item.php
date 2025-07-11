@@ -44,12 +44,18 @@ class Item extends Model
     {
         return $this->hasOne(Purchase::class);
     }
-    public function favoritedBy()
+    public function favorites()
     {
-        return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+        return $this->hasMany(Favorite::class);
     }
-
-    // app/Models/Item.php
+    public function isFavoritedBy($user)
+    {
+        return $this->favorites()->where('user_id', $user->id)->exists();
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     protected static function boot()
     {

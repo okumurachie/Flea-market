@@ -23,6 +23,7 @@ class UserController extends Controller
                 $items = $user->favorites()
                     ->with(['user', 'purchase'])
                     ->KeywordSearch($keyword)
+                    ->where('user_id', '!=', $user->id)
                     ->latest()
                     ->paginate(8)
                     ->appends($request->except('page'));
@@ -32,6 +33,9 @@ class UserController extends Controller
         } else {
             $items = Item::with(['user', 'purchase'])
                 ->KeywordSearch($keyword)
+                ->when(Auth::check(), function ($query) use ($user) {
+                    $query->where('user_id', '!=', $user->id);
+                })
                 ->latest()
                 ->paginate(8)
                 ->appends(request()->except('page'));

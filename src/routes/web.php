@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Item;
@@ -31,10 +32,12 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::get('/', [UserController::class, 'index']);
+Route::get('/', [UserController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage/profile', [UserController::class, 'profile']);
-    Route::post('/profile', [UserController::class, 'store'])->name('profile/store');
-    Route::put('/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
+    Route::post('mypage/profile', [UserController::class, 'store'])->name('profile/store');
+    Route::put('mypage/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
+    Route::get('/item/{id}', [ItemController::class, 'show'])->name('detail');
+    Route::post('/item/favorite/toggle', [ItemController::class, 'toggleFavorite']);
 });

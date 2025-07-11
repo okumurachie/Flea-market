@@ -21,10 +21,18 @@ body {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
 }
-.header_logo{
+.header_logo__group{
     width: 90%;
     padding-left: 40px;
     grid-column: 1;
+}
+.go-to-home{
+    display: block;
+    width: 100%;
+}
+.header_logo{
+    display: block;
+    width: 100%;
 }
 .search_field{
     width: 100%;
