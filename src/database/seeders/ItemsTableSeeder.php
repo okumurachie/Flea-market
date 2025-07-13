@@ -27,6 +27,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => 'スタイリッシュなデザインのメンズ腕時計',
                 'item_image' => 'images/ItemsSeeder/item1.jpg',
                 'condition_id' => 1,
+                'category_id' => [1, 5],
             ],
             [
                 'item_name' => 'HDD',
@@ -35,6 +36,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '高速で信頼性の高いハードディスク',
                 'item_image' => 'images/ItemsSeeder/item2.jpg',
                 'condition_id' => 2,
+                'category_id' => [2],
             ],
             [
                 'item_name' => '玉ねぎ3束',
@@ -43,6 +45,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'item_image' => 'images/ItemsSeeder/item3.jpg',
                 'condition_id' => 3,
+                'category_id' => [10],
             ],
             [
                 'item_name' => '革靴',
@@ -51,6 +54,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => 'クラッシックなデザインの革靴',
                 'item_image' => 'images/ItemsSeeder/item4.jpg',
                 'condition_id' => 4,
+                'category_id' => [1, 5],
             ],
             [
                 'item_name' => 'ノートPC',
@@ -59,6 +63,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '高性能なノートパソコン',
                 'item_image' => 'images/ItemsSeeder/item5.jpg',
                 'condition_id' => 1,
+                'category_id' => [2],
             ],
             [
                 'item_name' => 'マイク',
@@ -67,6 +72,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '高音質のレコーディング用マイク',
                 'item_image' => 'images/ItemsSeeder/item6.jpg',
                 'condition_id' => 2,
+                'category_id' => [2],
             ],
             [
                 'item_name' => 'ショルダーバッグ',
@@ -75,6 +81,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => 'おしゃれなショルダーバッグ',
                 'item_image' => 'images/ItemsSeeder/item7.jpg',
                 'condition_id' => 3,
+                'category_id' => [1, 4],
             ],
             [
                 'item_name' => 'タンブラー',
@@ -83,6 +90,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '使いやすいタンブラー',
                 'item_image' => 'images/ItemsSeeder/item8.jpg',
                 'condition_id' => 4,
+                'category_id' => [10],
             ],
             [
                 'item_name' => 'コーヒーミル',
@@ -91,6 +99,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '手動のコーヒーミル',
                 'item_image' => 'images/ItemsSeeder/item9.jpg',
                 'condition_id' => 1,
+                'category_id' => [3, 10],
             ],
             [
                 'item_name' => 'メイクセット',
@@ -99,6 +108,7 @@ class ItemsTableSeeder extends Seeder
                 'description' => '便利なメイクアップセット',
                 'item_image' => 'images/ItemsSeeder/item10.jpg',
                 'condition_id' => 2,
+                'category_id' => [1, 4],
             ],
         ];
         foreach ($items as $data) {
@@ -114,9 +124,7 @@ class ItemsTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-            $item->categories()->attach(
-                collect($categories)->random(rand(1, 3))->all()
-            );
+            $item->categories()->attach($data['category_id']);
         }
     }
 }

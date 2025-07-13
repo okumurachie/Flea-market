@@ -8,6 +8,11 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\Favorite;
+use App\Models\Comment;
+use App\Http\Requests\CommentRequest;
+
+
+
 
 
 
@@ -15,7 +20,13 @@ class ItemController extends Controller
 {
     public function show($id)
     {
-        $item = Item::with(['user', 'purchase'])->findOrFail($id);
+        $item = Item::with([
+            'comments.user.profile',
+            'user',
+            'categories',
+            'purchase',
+            'condition'
+        ])->findOrFail($id);
         return view('detail', compact('item'));
     }
 
@@ -45,5 +56,16 @@ class ItemController extends Controller
             'status' => $status,
             'count' => $count
         ]);
+    }
+    public function addComment(CommentRequest $request)
+    {
+
+        Comment::create([
+            'user_id' => auth()->id(),
+            'item_id' => $request->item_id,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->back()->with('success', 'コメントを投稿しました');
     }
 }

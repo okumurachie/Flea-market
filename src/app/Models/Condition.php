@@ -11,4 +11,9 @@ class Condition extends Model
     protected $guarded = [
         'id',
     ];
+
+    public function item()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

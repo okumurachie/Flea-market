@@ -6,17 +6,21 @@
     gap: 80px;
 }
 .item_content_img{
-    width: 45%;
+    width: 50%;
     height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto;
+    padding-top: 10px;
 }
 .item_content_img img{
     width: 90%;
-    margin: 10px 0 auto;
-    height: 100%;
+    height: auto;
 }
 .item_information{
     margin-top: 0;
-    width: 45%;
+    width: 50%;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -29,7 +33,7 @@
     margin-top: 0;
     padding: 0;
 }
-.brad_name{
+.brand_name{
     font-size: 20px;
     font-weight: 400;
     padding: 0;
@@ -47,21 +51,159 @@
 .price-of-item{
     font-size: 45px;
 }
+.purchases_button {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    background-color: #ff5555;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: 700;
+    border: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.purchases_button:hover {
+    background-color: #2779bd;
+}
 .favorite-and-comments{
-    width: 120px;
+    width: 100px;
     height: 67px;
-    margin-left: 20px;
+    margin-left: 30px;
     display: flex;
     justify-content: space-between;
 }
 .favorite-count,
 .comment-count{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    cursor: pointer;
+}
+.far fa-star,
+.fas fa-star,
+.far fa-comment{
+    font-size: 24px;
+}
+.fas fa-star{
+    color: gold;
+},
+.category-teg {
+    display: inline-block;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 6px 12px;
+    margin: 4px 6px 0 0;
+    border-radius: 16px;
+    font-size: 20px;
+    border: none;
+}
+h3{
+    font-size: 36px;
+    font-weight: 700;
+}
+.description{
+    font-size: 24px;
+    font-weight: 400;
+}
+.item-categories,
+.item-condition{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0;
+    gap: 60px;
+}
+.category-tag{
+    font-weight: 400;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    width: 100px;
+    height: 100%;
+    line-height: 30px;
+    border: none;
     text-align: center;
 }
-.far fa-star{
+.condition-tag{
+    font-weight: 400;
     font-size: 24px;
-    color: black;
+    height: 100%;
+    line-height: 30px;
 }
-far fa-comment{
+h4{
+    margin: 0;
+    line-height: 30px;
     font-size: 24px;
+    font-weight: 700;
+}
+.commemts-of-item{
+    margin-bottom: 25px;
+}
+.comment-block{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.user_images{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.user-icon{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+.user_name{
+    padding-left: 20px;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+}
+.comment-body{
+    display: block;
+    width: 100%;
+    height: auto;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+.add-comment{
+    font-size: 28px;
+    font-weight: 700;
+}
+.input-comment-form{
+    width: 100%;
+    min-height: 246px;
+    text-align: left;
+    margin: 10px 0 30px;
+    padding: 10px;
+}
+.input-comment__error-message{
+    color: #FF9494;
+}
+.add-comment__button{
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    background-color: #ff5555;
+    color: #ffffff;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    border: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+.add-comment__button:hover {
+    background-color: #2779bd;
 }

@@ -10,7 +10,7 @@
     <div class="profile-content-form">
         <form
             class="profile-form__form"
-            action="{{isset($profile) ? route('profile.update', $profile->id) : route('profile/store')}}"
+            action="{{isset($profile) ? route('profile.update', $profile->id) : route('profile.store')}}"
             method="post"
             enctype="multipart/form-data">
             @csrf

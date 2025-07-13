@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Purchase;
@@ -17,7 +18,6 @@ use App\Models\Purchase;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
@@ -33,11 +33,12 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/', [UserController::class, 'index'])->name('home');
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage/profile', [UserController::class, 'profile']);
-    Route::post('mypage/profile', [UserController::class, 'store'])->name('profile/store');
-    Route::put('mypage/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
-    Route::get('/item/{id}', [ItemController::class, 'show'])->name('detail');
+    Route::post('/mypage/profile', [UserController::class, 'store'])->name('profile.store');
+    Route::put('/mypage/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
     Route::post('/item/favorite/toggle', [ItemController::class, 'toggleFavorite']);
+    Route::post('/comments', [ItemController::class, 'addComment'])->name('comments.add');
 });
