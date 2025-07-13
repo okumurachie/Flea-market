@@ -22,7 +22,7 @@
                     @if(empty($profile->image))
                     <img id="preview" src="{{ asset('images/default.png') }}" alt="デフォルト画像">
                     @else
-                    <img id="preview" src="{{ asset('storage/' . $profile->image) }}" alt="プロフィール画像">
+                    <img id="preview" src="{{ asset($profile->image) }}" alt="プロフィール画像">
                     @endif
                     <label for="imageInput" class="file-label">画像を選択する</label>
                     <input type="file" id="imageInput" accept="image/*" name="image" class="visually-hidden">
