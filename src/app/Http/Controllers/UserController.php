@@ -7,6 +7,7 @@ use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Favorite;
 use App\Models\Purchase;
 use App\Models\Profile;
 
@@ -20,10 +21,12 @@ class UserController extends Controller
 
         if ($tab === 'mylist') {
             if ($user) {
-                $items = $user->favorites()
-                    ->with(['user', 'purchase'])
-                    ->KeywordSearch($keyword)
+                $items = Item::whereHas('favorites', function ($query) use ($user) {
+                    $query->where('user_id', $user->id);
+                })
+                    ->keywordSearch($keyword)
                     ->where('user_id', '!=', $user->id)
+                    ->with(['user', 'purchase'])
                     ->latest()
                     ->paginate(8)
                     ->appends($request->except('page'));
@@ -41,6 +44,27 @@ class UserController extends Controller
                 ->appends(request()->except('page'));
         }
         return view('index', compact('items', 'tab'));
+    }
+    public function mypage(Request $request)
+    {
+        $page = $request->query('page', 'sell');
+        $user = Auth::user();
+        $profile = $user->profile;
+        $items = collect();
+        $purchases = collect();
+        if ($page === 'buy') {
+            $purchases = $user->purchases()
+                ->with('item')
+                ->latest()
+                ->paginate(8)
+                ->appends(request()->except('page'));
+        } else {
+            $items = $user->items()
+                ->latest()
+                ->paginate(8)
+                ->appends(request()->except('page'));
+        }
+        return view('mypage', compact('profile', 'items', 'purchases', 'page'));
     }
 
     public function profile()
@@ -71,7 +95,7 @@ class UserController extends Controller
     {
         $profile = Profile::findOrFail($id);
 
-        if ($request->hadFile('image')) {
+        if ($request->hasFile('image')) {
             if ($profile->image) {
                 $oldImagePath = str_replace('storage/', 'public/', $profile->image);
                 if (\Storage::exists($oldImagePath)) {
@@ -80,8 +104,8 @@ class UserController extends Controller
             }
             $file = $request->file('image');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/images/profiles', $fileName);
-            $profile->image = 'storage/images/profiles' . $fileName;
+            $file->storeAs('public/images/profiles/', $fileName);
+            $profile->image = 'storage/images/profiles/' . $fileName;
         }
         $profile->user_name = $request->input('user_name');
         $profile->post_code = $request->input('post_code');

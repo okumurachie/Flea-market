@@ -39,7 +39,7 @@
                 @else
                 <a href="/login" class="for-login-form">ログイン</a>
                 @endif
-                <a href="" class="mypage">マイページ</a>
+                <a href="/mypage" class="mypage">マイページ</a>
                 <a href="" class="put-up_items">出品</a>
             </div>
             @endif

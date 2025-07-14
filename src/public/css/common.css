@@ -63,7 +63,7 @@ body {
 .mypage,
 .put-up_items {
     display: inline-block;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 400;
     text-decoration: none;
     cursor: pointer;
@@ -79,7 +79,7 @@ body {
 }
 .header-nav__button{
     border: none;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 400;
     color: #ffffff;
     background-color: #000000;

@@ -20,7 +20,7 @@
                 <div class="content__box-item">
                     <div class="content__box__inner">
                         <div class="content__img">
-                            <img src="{{asset($item->item_image)}}" alt="{{$item->item_image}}">
+                            <img src="{{asset($item->item_image ?: 'images/NoImage.png') }}" alt="{{$item->item_name}}">
                         </div>
                         <div class="content__name">
                             <p>{{$item->item_name}}</p>

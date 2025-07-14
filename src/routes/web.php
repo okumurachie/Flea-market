@@ -36,6 +36,7 @@ Route::get('/', [UserController::class, 'index'])->name('home');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
     Route::get('/mypage/profile', [UserController::class, 'profile']);
     Route::post('/mypage/profile', [UserController::class, 'store'])->name('profile.store');
     Route::put('/mypage/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
