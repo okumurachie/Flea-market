@@ -18,7 +18,7 @@
             @method('put')
             @endif
             <div class="profile-image-form__group">
-                <div class="product-form__image__input">
+                <div class="profile-form__image__input">
                     @if(empty($profile->image))
                     <img id="preview" src="{{ asset('images/default.png') }}" alt="デフォルト画像">
                     @else

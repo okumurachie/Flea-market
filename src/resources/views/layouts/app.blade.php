@@ -40,7 +40,7 @@
                 <a href="/login" class="for-login-form">ログイン</a>
                 @endif
                 <a href="/mypage" class="mypage">マイページ</a>
-                <a href="" class="put-up_items">出品</a>
+                <a href="/sell" class="put-up_items">出品</a>
             </div>
             @endif
         </header>

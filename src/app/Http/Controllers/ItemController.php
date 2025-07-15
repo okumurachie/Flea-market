@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ExhibitionRequest;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\Favorite;
 use App\Models\Comment;
+use App\Models\Category;
+use App\Models\Condition;
 use App\Http\Requests\CommentRequest;
+
 
 
 
@@ -67,5 +71,27 @@ class ItemController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'コメントを投稿しました');
+    }
+
+    public function create()
+    {
+        $user = Auth::user();
+        $categories = Category::all();
+        $conditions = Condition::all();
+        return view('sell', compact('categories', 'conditions'));
+    }
+    public function store(ExhibitionRequest $request)
+    {
+        $itemData['user_id'] = Auth::id();
+        $itemData = $request->validated();
+
+        if ($request->hasFile('item_image')) {
+            $file = $request->file('item_image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/images/items/', $fileName);
+            $itemData['item_image'] = 'storage/images/items/' . $fileName;
+        }
+        Item::create($itemData);
+        return redirect('/')->with('message', '出品登録が完了しました');
     }
 }

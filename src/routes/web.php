@@ -42,4 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/mypage/profile/{profile}', [UserController::class, 'update'])->name('profile.update');
     Route::post('/item/favorite/toggle', [ItemController::class, 'toggleFavorite']);
     Route::post('/comments', [ItemController::class, 'addComment'])->name('comments.add');
+    Route::get('/sell', [ItemController::class, 'create']);
+    Route::post('/sell', [ItemController::class, 'store']);
 });
