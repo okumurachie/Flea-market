@@ -17,6 +17,13 @@
     align-items: center;
     justify-content: space-between;
 }
+#preview {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
 .user_name h2{
     font-size: 36px;
     font-weight: 700;

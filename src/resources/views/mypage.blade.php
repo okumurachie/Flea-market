@@ -15,7 +15,7 @@
                     @if(empty($profile->image))
                     <img src="{{ asset('images/default.png') }}" alt="デフォルト画像">
                     @else
-                    <img src="{{ asset($profile->image) }}" alt="プロフィール画像">
+                    <img id="preview" src="{{ asset($profile->image) }}" alt="プロフィール画像">
                     @endif
                 </div>
                 <div class="user_name">

@@ -9,6 +9,10 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
+    max-width: 1540px;
+    margin: 0 auto;
+    overflow-x: hidden;
 }
 .header {
     display: grid;

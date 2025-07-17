@@ -82,8 +82,8 @@ class ItemController extends Controller
     }
     public function store(ExhibitionRequest $request)
     {
-        $itemData['user_id'] = Auth::id();
         $itemData = $request->validated();
+        $itemData['user_id'] = Auth::id();
 
         if ($request->hasFile('item_image')) {
             $file = $request->file('item_image');
