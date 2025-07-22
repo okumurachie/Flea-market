@@ -17,7 +17,7 @@ class Item extends Model
         'item_name',
         'category_id',
         'condition_id',
-        'bland',
+        'brand',
         'description',
         'price',
         'item_image',

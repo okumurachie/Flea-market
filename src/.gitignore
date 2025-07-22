@@ -17,8 +17,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/docker/mysql/data
 /storage/app/public/images/items/*
 !/storage/app/public/images/items/.gitkeep
 
 /storage/app/public/images/profiles/*
 !/storage/app/public/images/profiles/.gitkeep
+.DS_Store
+/storage/logs/*.log

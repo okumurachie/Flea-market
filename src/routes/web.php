@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Models\User;
@@ -44,4 +45,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/comments', [ItemController::class, 'addComment'])->name('comments.add');
     Route::get('/sell', [ItemController::class, 'create']);
     Route::post('/sell', [ItemController::class, 'store']);
+    Route::get('/purchase/{id}', [PurchaseController::class, 'show']);
 });
