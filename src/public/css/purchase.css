@@ -1,0 +1,71 @@
+.purchase-form__content{
+    width: 90%;
+    height: auto;
+    margin: 90px auto 0;
+    display: flex;
+    flex-direction: row;
+}
+.purchase-form{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.purchase-form__input{
+    width: 60%;
+}
+.image-input__group,
+.input__group{
+    width: 100%;
+    border-bottom: 1px solid #000000;
+}
+.image-input__group{
+    display: flex;
+    flex-direction: row;
+}
+.item__img{
+    width: 177.53px;
+    height: 177.53px;
+    padding: 20px;
+}
+.item__img img{
+    width: 100%;
+    height: auto;
+}
+.item__information{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.item__price{
+    margin-top: 0;
+}
+.item__name,
+.price-of-item{
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 0;
+}
+.yen-mark{
+    font-size: 27px;
+    font-weight: 400;
+}
+
+.purchase-form__confirmed{
+    width: 30%;
+}
+.input-title__group{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+h4{
+    font-size: 20px;
+    font-weight: 700;
+}
+.edit-address{
+    font-size: 20px;
+    font-weight: 400;
+    text-decoration: none;
+}

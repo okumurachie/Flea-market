@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Purchase;
 
@@ -10,8 +11,8 @@ class PurchaseController extends Controller
 {
     public function show($id)
     {
-        // $id に URL から渡された item_id が入ります
         $item = Item::findOrFail($id);
-        return view('purchase.show', compact('item'));
+        $user = Auth::user();
+        return view('purchase', compact('item', 'user'));
     }
 }

@@ -22,7 +22,7 @@ class PurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'payment_method' => 'required|string',
+            'payment_method' => 'required|in:コンビニ支払い,カード支払い',
             'post_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
             'destination' => 'required|string',
         ];
