@@ -10,7 +10,6 @@
     display: flex;
     justify-content: space-between;
 }
-
 .purchase-form__input{
     width: 60%;
 }
@@ -22,18 +21,19 @@
 .image-input__group{
     display: flex;
     flex-direction: row;
+    padding: 0 0 50px;
 }
 .item__img{
-    width: 177.53px;
-    height: 177.53px;
-    padding: 20px;
+    width: 190px;
+    height: 190px;
 }
 .item__img img{
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 .item__information{
-    padding: 20px;
+    padding: 0;
+    margin-left: 50px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -42,30 +42,136 @@
     margin-top: 0;
 }
 .item__name,
-.price-of-item{
+.price-of-item1{
     font-size: 30px;
     font-weight: 700;
     margin-top: 0;
+    padding: 0;
 }
-.yen-mark{
+.yen-mark1{
     font-size: 27px;
     font-weight: 400;
 }
 
-.purchase-form__confirmed{
-    width: 30%;
+
+h4{
+    font-size: 20px;
+    font-weight: 700;
+    padding-left: 20px;
 }
+.payment__select{
+    position: relative;
+    width: 265px;
+    height: 31px;
+    margin-left: 70px;
+    margin-bottom: 50px;
+}
+.payment__select::after{
+    position: absolute;
+    top: 50%;
+    right: 3%;
+    width: 0;
+    height: 0;
+    border-top: 12px solid #5f5f5f;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+    content: "";
+    transform: translateY(-50%);
+}
+.payment__select-inner{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: none;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    padding-left:5px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #5f5f5f;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+}
+
 .input-title__group{
     width: 90%;
     display: flex;
     justify-content: space-between;
-}
-h4{
-    font-size: 20px;
-    font-weight: 700;
+    align-items:center;
 }
 .edit-address{
     font-size: 20px;
     font-weight: 400;
     text-decoration: none;
+    color: #0073cc;
+}
+.destination__group{
+    margin-left: 50px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction:column;
+}
+.post_code__input,
+.destination__input{
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+}
+.purchase-form__confirmed{
+    width: 30%;
+}
+.confirmed-table{
+    width: 100%;
+    margin-bottom: 50px;
+}
+.table-row{
+    width: 100%;
+    height: 115px;
+    border: 1px solid #000000;
+    text-align: center;
+}
+.table-th{
+    font-size: 20px;
+    font-weight: 400;
+}
+.table-td-payment{
+    font-size: 24px;
+    font-weight: 400;
+}
+.table-td-price{
+    font-size: 0;
+}
+.yen-mark2{
+    font-size: 20px;
+    font-weight: 400;
+}
+.table-td-price .price-of-item2{
+    font-size: 24px;
+    font-weight: 400;
+}
+.purchase-form__button{
+    width: 100%;
+    height: 60px;
+}
+.purchase__button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #FF5555;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight:700;
+    text-align: center;
+    vertical-align: center;
+    cursor: pointer;
+}
+.purchase__button:hover {
+    background-color: #2779bd;
+}
+.purchase-form__error-message{
+    color: #FF9494;
+    margin-bottom: 20px;
+}
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\AddressRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Item;
@@ -112,11 +113,29 @@ class UserController extends Controller
         $profile->address = $request->input('address');
         $profile->building = $request->input('building');
 
-        // 必要に応じてここで profile_completed を更新
         $profile->profile_completed = true;
 
         $profile->save();
 
         return redirect('/')->with('message', 'プロフィールを更新しました');
+    }
+    public function showEditAddressForm($item_id)
+    {
+        $user = Auth::user();
+        $profile = $user->profile;
+        $item = Item::findOrFail($item_id);
+        return view('address', compact('user', 'profile'));
+    }
+    public function editAddress(AddressRequest $request, $item_id)
+    {
+        $user = Auth::user();
+        $profile = $user->profile;
+
+        $profile->update([
+            'post_code' => $request->input('post_code'),
+            'address'     => $request->input('address'),
+            'building'    => $request->input('building'),
+        ]);
+        return redirect('/purchase/{$item_id}}')->with('message', '住所を変更しました');
     }
 }

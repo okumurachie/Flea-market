@@ -16,15 +16,15 @@
                 <div class="item__information">
                     <h3 class="item__name">{{$item['item_name']}}</h3>
                     <h3 class="item__price">
-                        <span class="yen-mark">¥</span>
-                        <span class="price-of-item">{{ number_format($item['price']) }}</span>
+                        <span class="yen-mark1">¥</span>
+                        <span class="price-of-item1">{{ number_format($item['price']) }}</span>
                     </h3>
                 </div>
             </div>
             <div class="input__group">
                 <h4>支払い方法</h4>
                 <div class="payment__select">
-                    <select name="payment_method" class="select-payment__method" id="payment_method">
+                    <select name="payment_method" class="payment__select-inner" id="payment_method">
                         <option disabled selected>選択してください</option>
                         <option value="コンビニ支払い" {{ old('payment_method') == 'コンビニ支払い' ? 'selected' : '' }}>コンビニ支払い</option>
                         <option value="カード支払い" {{ old('payment_method') == 'カード支払い' ? 'selected' : '' }}>カード支払い</option>
@@ -61,13 +61,14 @@
             <table class="confirmed-table">
                 <tr class="table-row">
                     <th class="table-th">商品代金</th>
-                    <td class="table-td">
-                        <span class="yen-mark">¥</span>{{ number_format($item['price'])}}
+                    <td class="table-td-price">
+                        <span class="yen-mark2">¥</span>
+                        <span class="price-of-item2">{{ number_format($item['price'])}}</span>
                     </td>
                 </tr>
                 <tr class="table-row">
                     <th class="table-th">支払い方法</th>
-                    <td class="table-td" id="payment-method-display">{{ old('payment_method') }}</td>
+                    <td class="table-td-payment" id="payment-method-display">{{ old('payment_method') }}</td>
                 </tr>
             </table>
             <div class="purchase-form__button">
