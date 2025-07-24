@@ -1,3 +1,4 @@
+/docker/mysql/data/
 /.phpunit.cache
 /node_modules
 /public/build
@@ -17,7 +18,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/docker/mysql/data
 /storage/app/public/images/items/*
 !/storage/app/public/images/items/.gitkeep
 
