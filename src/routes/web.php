@@ -45,7 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/comments', [ItemController::class, 'addComment'])->name('comments.add');
     Route::get('/sell', [ItemController::class, 'create']);
     Route::post('/sell', [ItemController::class, 'store']);
-    Route::get('/purchase/{id}', [PurchaseController::class, 'show']);
+    Route::get('/purchase/{id}', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::get('/purchase/address/{item_id}', [UserController::class, 'showEditAddressForm']);
-    Route::put('/purchase/address/{item_id}', [UserController::class, 'editAddress'])->name('address.update');
+    Route::patch('/purchase/{id}', [UserController::class, 'editAddress'])->name('address.update');
 });
