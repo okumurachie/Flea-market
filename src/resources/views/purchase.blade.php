@@ -6,8 +6,9 @@
 
 @section('content')
 <div class="purchase-form__content">
-    <form action="/purchase" class="purchase-form" method="post" enctype="multipart/form-data">
+    <form action="{{ route('purchase.checkout') }}" class="purchase-form" method="post">
         @csrf
+        <input type="hidden" name="item_id" value="{{ $item['id'] }}">
         <div class="purchase-form__input">
             <div class="image-input__group">
                 <div class="item__img">
@@ -26,8 +27,8 @@
                 <div class="payment__select">
                     <select name="payment_method" class="payment__select-inner" id="payment_method">
                         <option disabled selected>選択してください</option>
-                        <option value="コンビニ支払い" {{ old('payment_method') == 'コンビニ支払い' ? 'selected' : '' }}>コンビニ支払い</option>
-                        <option value="カード支払い" {{ old('payment_method') == 'カード支払い' ? 'selected' : '' }}>カード支払い</option>
+                        <option value="konbini" {{ old('payment_method') == 'konbini' ? 'selected' : '' }}>コンビニ支払い</option>
+                        <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>カード支払い</option>
                     </select>
                 </div>
                 <p class="purchase-form__error-message">

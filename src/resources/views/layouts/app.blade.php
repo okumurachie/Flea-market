@@ -18,6 +18,11 @@
         {{ session('message') }}
     </div>
     @endif
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div class="app">
         <header class="header">
             <div class="header_logo__group">

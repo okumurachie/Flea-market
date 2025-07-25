@@ -48,4 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchase/{id}', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::get('/purchase/address/{item_id}', [UserController::class, 'showEditAddressForm']);
     Route::patch('/purchase/{id}', [UserController::class, 'editAddress'])->name('address.update');
+    Route::post('/purchase/checkout', [PurchaseController::class, 'checkout'])->name('purchase.checkout');
+    Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('purchase.success');
+    Route::get('/purchase/{id}/cancel', [PurchaseController::class, 'cancel'])->name('purchase.cancel');
 });
