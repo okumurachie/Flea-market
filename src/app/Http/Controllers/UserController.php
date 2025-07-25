@@ -124,7 +124,7 @@ class UserController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
         $item = Item::findOrFail($item_id);
-        return view('address', compact('user', 'profile'));
+        return view('address', compact('user', 'profile', 'item'));
     }
     public function editAddress(AddressRequest $request, $item_id)
     {
@@ -136,6 +136,6 @@ class UserController extends Controller
             'address'     => $request->input('address'),
             'building'    => $request->input('building'),
         ]);
-        return redirect('/purchase/{$item_id}}')->with('message', '住所を変更しました');
+        return redirect()->route('purchase.show', ['id' => $item_id])->with('message', '住所を変更しました');
     }
 }
