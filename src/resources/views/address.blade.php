@@ -8,12 +8,12 @@
 <div class="address-form">
     <h2 class="address-form__heading">住所の変更</h2>
     <div class="address-form__inner">
-        <form class="address-form__form" action="{{route('address.update', ['item_id' => $item->id])}}" method="post">
-            @method=('put')
+        <form class="address-form__form" action="{{route('address.update', ['id' => $item->id])}}" method="post">
+            @method('patch')
             @csrf
             <div class="address-form__group">
                 <label for="post_code" class="address-form__label">郵便番号</label>
-                <input type="text" class="address-form__input" name="post_code" id="post_code" maxlength="8" value="〒{{ old('post_code', $profile->post_code ?? '' ) }}">
+                <input type="text" class="address-form__input" name="post_code" id="post_code" maxlength="8" value="{{ old('post_code', $profile->post_code ?? '' ) }}">
                 <p class="address-form__error-message">
                     @error('post_code')
                     {{ $message }}
