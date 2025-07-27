@@ -10,6 +10,19 @@
 - 1.docker-compose exec php bash
 - 2.composer install
 - 3.cp .env.example .env(.env.example ファイルから.env を作成し、環境変数を変更)
+        DB_HOST=mysql
+        DB_DATABASE=laravel_db
+        DB_USERNAME=laravel_user
+        DB_PASSWORD=laravel_pass
+
+        MAIL_MAILER=smtp
+        MAIL_HOST=mailhog
+        MAIL_PORT=1025
+        MAIL_FROM_ADDRESS=test@example.com
+
+        STRIPE_PUBLIC_KEY=pk_test_*************
+        STRIPE_SECRET_KEY=sk_test_*************
+
 - 4.php artisan key:generate
 - 5.php artisan migrate
 - 6.php artisan db:seed

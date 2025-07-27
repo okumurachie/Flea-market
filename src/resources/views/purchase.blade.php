@@ -68,8 +68,15 @@
                     </td>
                 </tr>
                 <tr class="table-row">
+                    @php
+                    $paymentMethodLabel = match(old('payment_method')) {
+                    'konbini' => 'コンビニ支払い',
+                    'card' => 'カード支払い',
+                    default => '選択してください',
+                    };
+                    @endphp
                     <th class="table-th">支払い方法</th>
-                    <td class="table-td-payment" id="payment-method-display">{{ old('payment_method') }}</td>
+                    <td class="table-td-payment" id="payment-method-display">{{ $paymentMethodLabel }}</td>
                 </tr>
             </table>
             <div class="purchase-form__button">

@@ -25,29 +25,31 @@
     @endif
     <div class="app">
         <header class="header">
-            <div class="header_logo__group">
-                <a href="{{ route('home') }}" class="go-to-home">
-                    <img src="{{asset('images/logo.svg')}}" alt="header_logo" class="header_logo">
-                </a>
-            </div>
-            @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
-            <form action="/" class="search_field" method="get">
-                <input type="hidden" name="tab" value="{{ request('tab') }}">
-                <input type="text" class="search-form__keyword-input" name="keyword" placeholder="なにをお探しですか？" value="{{request('keyword')}}">
-            </form>
-            <div class="header__link">
-                @if (Auth::check())
-                <form class="form" action="/logout" method="post">
-                    @csrf
-                    <button class="header-nav__button">ログアウト</button>
+            <div class="header-group">
+                <div class="header_logo__group">
+                    <a href="{{ route('home') }}" class="go-to-home">
+                        <img src="{{asset('images/logo.svg')}}" alt="header_logo" class="header_logo">
+                    </a>
+                </div>
+                @if (!Request::is('login') && !Request::is('register') && !Request::is('email/verify'))
+                <form action="/" class="search_field" method="get">
+                    <input type="hidden" name="tab" value="{{ request('tab') }}">
+                    <input type="text" class="search-form__keyword-input" name="keyword" placeholder="なにをお探しですか？" value="{{request('keyword')}}">
                 </form>
-                @else
-                <a href="/login" class="for-login-form">ログイン</a>
+                <div class="header__link">
+                    @if (Auth::check())
+                    <form class="form" action="/logout" method="post">
+                        @csrf
+                        <button class="header-nav__button">ログアウト</button>
+                    </form>
+                    @else
+                    <a href="/login" class="for-login-form">ログイン</a>
+                    @endif
+                    <a href="/mypage" class="mypage">マイページ</a>
+                    <a href="/sell" class="put-up_items">出品</a>
+                </div>
                 @endif
-                <a href="/mypage" class="mypage">マイページ</a>
-                <a href="/sell" class="put-up_items">出品</a>
             </div>
-            @endif
         </header>
         <div class="content">
             @yield('content')
