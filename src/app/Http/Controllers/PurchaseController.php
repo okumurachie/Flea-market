@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PurchaseRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
-use App\Helpers\MethodHelper;
 use App\Models\Purchase;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
@@ -17,8 +16,7 @@ class PurchaseController extends Controller
     {
         $item = Item::findOrFail($id);
         $user = Auth::user();
-        $label = MethodHelper::getPaymentMethodLabel($item->payment_method);
-        return view('purchase', compact('item', 'user', 'label'));
+        return view('purchase', compact('item', 'user'));
     }
 
 

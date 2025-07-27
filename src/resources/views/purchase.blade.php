@@ -43,7 +43,10 @@
                     <a href="/purchase/address/{{$item['id']}}" class="edit-address">変更する</a>
                 </div>
                 <div class="destination__group">
-                    <input type="text" class="post_code__input" name="post_code" id="post_code" maxlength="8" value="〒 {{ old('post_code', $user->profile->post_code)}}">
+                    <div class="postal-wrapper">
+                        <span class="postal-mark">〒</span>
+                        <input type="text" class="post_code__input" name="post_code" id="post_code" maxlength="8" value="{{ old('post_code', $user->profile->post_code ?? '') }}">
+                    </div>
                     <input type="text" class="destination__input" name="destination" value="{{old('destination', $user->profile->address . ($user->profile->building ?? '')) }}">
                 </div>
                 <p class="purchase-form__error-message">
@@ -69,14 +72,14 @@
                 </tr>
                 <tr class="table-row">
                     @php
-                    $paymentMethodLabel = match(old('payment_method')) {
+                    $rawValue = old('payment_method') ?? '';
+                    $paymentMethodLabel = [
                     'konbini' => 'コンビニ支払い',
                     'card' => 'カード支払い',
-                    default => '選択してください',
-                    };
+                    ][$rawValue] ?? '選択してください';
                     @endphp
                     <th class="table-th">支払い方法</th>
-                    <td class="table-td-payment" id="payment-method-display">{{ $paymentMethodLabel }}</td>
+                    <td class="table-td-payment" id="payment-method-display">{{ $paymentMethodLabel ?? '選択してください'}}</td>
                 </tr>
             </table>
             <div class="purchase-form__button">
@@ -90,13 +93,23 @@
         const select = document.getElementById('payment_method');
         const display = document.getElementById('payment-method-display');
 
-        select.addEventListener('change', function() {
-            display.textContent = select.value;
-        });
+        const labels = {
+            'konbini': 'コンビニ支払い',
+            'card': 'カード支払い',
+            '': '選択してください',
+        };
 
-        if (select.value) {
-            display.textContent = select.value;
+        function updateDisplay() {
+            const value = select.value;
+            if (!value) {
+                display.textContent = '選択してください';
+            } else {
+                display.textContent = labels[value] ?? '選択してください';
+            }
         }
+        updateDisplay();
+
+        select.addEventListener('change', updateDisplay);
     });
 </script>
 @endsection
