@@ -35,6 +35,8 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::get('/', [UserController::class, 'index'])->name('home');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('detail');
+Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('purchase.success');
+Route::get('/purchase/{id}/cancel', [PurchaseController::class, 'cancel'])->name('purchase.cancel');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
@@ -49,6 +51,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchase/address/{item_id}', [UserController::class, 'showEditAddressForm']);
     Route::patch('/purchase/{id}', [UserController::class, 'editAddress'])->name('address.update');
     Route::post('/purchase/checkout', [PurchaseController::class, 'checkout'])->name('purchase.checkout');
-    Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('purchase.success');
-    Route::get('/purchase/{id}/cancel', [PurchaseController::class, 'cancel'])->name('purchase.cancel');
 });
