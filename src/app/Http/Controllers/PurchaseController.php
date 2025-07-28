@@ -9,6 +9,7 @@ use App\Models\Item;
 use App\Models\Purchase;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 
 class PurchaseController extends Controller
 {
@@ -40,11 +41,14 @@ class PurchaseController extends Controller
             ]],
             'mode' => 'payment',
             'success_url' => route('purchase.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('purchase.cancel'),
-            'metadata' => [
-                'item_id'    => $item->id,
-                'post_code'  => $request->post_code,
-                'destination' => $request->destination,
+            'cancel_url' => route('purchase.cancel', ['id' => $item->id]),
+            'payment_intent_data' => [
+                'metadata' => [
+                    'item_id' => $item->id,
+                    'user_id' => auth()->id(),
+                    'post_code'  => $request->post_code,
+                    'destination' => $request->destination,
+                ],
             ],
         ]);
 
@@ -61,9 +65,12 @@ class PurchaseController extends Controller
 
         try {
             $session = Session::retrieve($session_id);
+            $paymentIntent = PaymentIntent::retrieve($session->payment_intent);
 
-            $item_id = $session->metadata->item_id ?? null;
-            $user_id = auth()->id();
+            $item_id = $paymentIntent->metadata->item_id ?? null;
+            $user_id = $paymentIntent->metadata->user_id ?? null;
+            $post_code = $paymentIntent->metadata->post_code ?? null;
+            $destination = $paymentIntent->metadata->destination ?? null;
 
             if (!$item_id || !$user_id) {
                 return redirect('/')->with('error', '購入情報が不足しています。');
@@ -78,8 +85,8 @@ class PurchaseController extends Controller
                     'user_id'         => $user_id,
                     'item_id'         => $item_id,
                     'payment_method'  => $session->payment_method_types[0] ?? 'unknown',
-                    'post_code'       => $session->metadata->post_code ?? '',
-                    'destination'     => $session->metadata->destination ?? '',
+                    'post_code'       => $post_code,
+                    'destination'     => $destination,
                 ]);
             }
             return redirect('/')->with('message', '購入しました。ありがとうございます。');
