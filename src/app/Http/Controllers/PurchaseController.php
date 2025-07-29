@@ -23,14 +23,14 @@ class PurchaseController extends Controller
 
     public function checkout(PurchaseRequest $request)
     {
-        $request->validated();
-
-        $item = Item::findOrFail($request->item_id);
+        $validated = $request->validated();
+        $user_id = auth()->id();
+        $item = Item::findOrFail($validated['item_id']);
 
         Stripe::setApiKey(config('stripe.stripe_secret_key'));
 
         $session = Session::create([
-            'payment_method_types' => [$request->payment_method],
+            'payment_method_types' => [$validated['payment_method']],
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'jpy',
@@ -45,9 +45,9 @@ class PurchaseController extends Controller
             'payment_intent_data' => [
                 'metadata' => [
                     'item_id' => $item->id,
-                    'user_id' => auth()->id(),
-                    'post_code'  => $request->post_code,
-                    'destination' => $request->destination,
+                    'user_id' => $user_id,
+                    'post_code'  => $validated['post_code'],
+                    'destination' => $validated['destination'],
                 ],
             ],
         ]);
