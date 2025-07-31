@@ -29,58 +29,30 @@ class PurchaseController extends Controller
 
         Stripe::setApiKey(config('stripe.stripe_secret_key'));
 
-        $paymentMethod = $request->input('payment_method');
-
-        if ($paymentMethod === 'card') {
-            $session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'jpy',
-                        'product_data' => ['name' => $item->item_name],
-                        'unit_amount' => $item->price,
-                    ],
-                    'quantity' => 1,
-                ]],
-                'mode' => 'payment',
-                'success_url' => route('purchase.success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('purchase.cancel', ['id' => $item->id]),
-                'payment_intent_data' => [
-                    'metadata' => [
-                        'item_id' => $item->id,
-                        'user_id' => $user_id,
-                        'post_code'  => $validated['post_code'],
-                        'destination' => $validated['destination'],
-                    ],
+        $session = Session::create([
+            'payment_method_types' => [$validated['payment_method']],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => ['name' => $item->item_name],
+                    'unit_amount' => $item->price,
                 ],
-            ]);
-            return redirect($session->url);
-        } elseif ($paymentMethod === 'konbini') {
-            $paymentIntent = PaymentIntent::create([
-                'payment_method_types' => ['konbini'],
-                'currency' => 'jpy',
-                'amount' => $item->price,
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('purchase.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('purchase.cancel', ['id' => $item->id]),
+            'payment_intent_data' => [
                 'metadata' => [
                     'item_id' => $item->id,
                     'user_id' => $user_id,
-                    'item_name' => $item->item_name,
                     'post_code'  => $validated['post_code'],
                     'destination' => $validated['destination'],
                 ],
-                'payment_method_options' => [
-                    'konbini' => [
-                        'expires_after_days' => 3,
-                    ],
-                ],
-            ]);
-            $voucherUrl = $paymentIntent->next_action['display_details']['hosted_voucher_url'] ?? null;
+            ],
+        ]);
 
-            return view('konbini_confirm', [
-                'voucher_url' => $voucherUrl,
-                'item_id' => $item->id,
-            ]);
-        }
-        return redirect('/')->with('error', '支払い方法が無効です。');
+        return redirect($session->url);
     }
     public function success(Request $request)
     {
@@ -114,19 +86,23 @@ class PurchaseController extends Controller
                     Purchase::create([
                         'user_id'         => $user_id,
                         'item_id'         => $item_id,
-                        'payment_method'  => 'card',
+                        'payment_method'  => $paymentMethod,
                         'post_code'       => $post_code,
                         'destination'     => $destination,
                     ]);
                 }
                 return redirect('/')->with('message', '購入しました。ありがとうございます。');
             }
+
             return redirect('/')->with('error', '未対応の支払い方法です。');
         } catch (\Exception $e) {
             return redirect('/')->with('error', '購入処理に失敗しました: ' . $e->getMessage());
         }
     }
-
+    public function konbiniInfo()
+    {
+        return redirect('/')->with('message', '注文を受け付けました。お支払い番号を印刷の上、店舗でお支払いください。');
+    }
     public function cancel($item_id)
     {
         return redirect()->route('purchase.show', ['id' => $item_id])

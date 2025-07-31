@@ -3,11 +3,10 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Models\User;
-use App\Models\Item;
-use App\Models\Purchase;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +35,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 Route::get('/', [UserController::class, 'index'])->name('home');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('detail');
 Route::get('/purchase/success', [PurchaseController::class, 'success'])->name('purchase.success');
+Route::post('/webhook/stripe', [StripeWebhookController::class, 'handle']);
 Route::get('/purchase/{id}/cancel', [PurchaseController::class, 'cancel'])->name('purchase.cancel');
 
 Route::middleware(['auth', 'verified'])->group(function () {
