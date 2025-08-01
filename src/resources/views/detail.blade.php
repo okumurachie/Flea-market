@@ -35,9 +35,14 @@
                 <span id="comment-count">{{ $item->comments()->count() }}</span>
             </div>
         </div>
-        <a class="purchases_button" href="/purchase/{{$item['id']}}">
+        @if($item->purchase)
+        <p class="sold-label">SOLD</p>
+        @else
+        <a class="purchases_button" href="/purchase/{{$item->id}}">
             購入手続きへ
         </a>
+        @endif
+
         <div class="item-description">
             <h3>商品説明</h3>
             <p class="description">{{$item['description']}}</p>

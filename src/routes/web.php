@@ -7,6 +7,8 @@ use App\Http\Controllers\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
+use Illuminate\Support\Facades\Log;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,4 +53,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchase/address/{item_id}', [UserController::class, 'showEditAddressForm']);
     Route::patch('/purchase/{id}', [UserController::class, 'editAddress'])->name('address.update');
     Route::post('/purchase/checkout', [PurchaseController::class, 'checkout'])->name('purchase.checkout');
+    Route::get('/konbini/confirm', [PurchaseController::class, 'showKonbiniConfirm'])->name('konbini.confirm');
+});
+
+Route::get('/test-log', function () {
+    Log::info('これはテストログです！');
+    return 'ログ書いたよ！';
 });

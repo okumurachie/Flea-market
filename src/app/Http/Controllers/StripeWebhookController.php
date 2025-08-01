@@ -13,6 +13,9 @@ class StripeWebhookController extends Controller
     public function handle(Request $request)
     {
         $payload = $request->getContent();
+
+        Log::info('Webhook 受信', ['payload' => $payload]);
+
         $event = json_decode($payload, true);
 
         if (!isset($event['type'])) {

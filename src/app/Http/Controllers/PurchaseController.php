@@ -11,6 +11,8 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 
+use Illuminate\Support\Facades\Log;
+
 class PurchaseController extends Controller
 {
     public function show($id)
@@ -24,7 +26,8 @@ class PurchaseController extends Controller
     public function checkout(PurchaseRequest $request)
     {
         $validated = $request->validated();
-        $user_id = auth()->id();
+        $user = Auth::user();
+        $user_id = $user->id;
         $item = Item::findOrFail($validated['item_id']);
 
         Stripe::setApiKey(config('stripe.stripe_secret_key'));
@@ -60,6 +63,14 @@ class PurchaseController extends Controller
                 'payment_method_types' => ['konbini'],
                 'currency' => 'jpy',
                 'amount' => $item->price,
+                'payment_method_data' => [
+                    'type' => 'konbini',
+                    'billing_details' => [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ],
+                ],
+                'confirm' => true,
                 'metadata' => [
                     'item_id' => $item->id,
                     'user_id' => $user_id,
@@ -73,12 +84,16 @@ class PurchaseController extends Controller
                     ],
                 ],
             ]);
-            $voucherUrl = $paymentIntent->next_action['display_details']['hosted_voucher_url'] ?? null;
+            Log::debug('PaymentIntent:', $paymentIntent->toArray());
+            Log::debug('next_action:', (array) $paymentIntent->next_action);
 
-            return view('konbini_confirm', [
+
+            $voucherUrl = $paymentIntent->next_action->konbini_display_details->hosted_voucher_url ?? null;
+            session([
                 'voucher_url' => $voucherUrl,
-                'item_id' => $item->id,
+                'item_id' => $item->id
             ]);
+            return redirect()->route('konbini.confirm');
         }
         return redirect('/')->with('error', '支払い方法が無効です。');
     }
@@ -125,6 +140,21 @@ class PurchaseController extends Controller
         } catch (\Exception $e) {
             return redirect('/')->with('error', '購入処理に失敗しました: ' . $e->getMessage());
         }
+    }
+
+    public function showKonbiniConfirm()
+    {
+        logger('voucher_url: ' . session('voucher_url'));
+        logger('item_id: ' . session('item_id'));
+
+        $voucher_url = session('voucher_url');
+        $itemId = session('item_id');
+
+        if (!$voucher_url || !$itemId) {
+            abort(404, '支払い情報が見つかりません。');
+        }
+
+        return view('konbini_confirm', compact('voucher_url', 'itemId'));
     }
 
     public function cancel($item_id)

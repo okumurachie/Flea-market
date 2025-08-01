@@ -35,6 +35,23 @@
 - MySQL 8.0
 - nginx 1.21.1
 
+---
+## 購入データの保存（コンビニ支払いの場合）
+コンビニ支払いはカード決済と異なり、即時に支払いが確定しないため、StripeのWebhookを使用し、支払い完了後に購入データを保存する仕組みを構築しました。StripeWebhookController を作成し、payment_intent.succeeded イベント受信時に購入データを保存する処理を実装しました。
+
+### テスト用イベント送信
+以下のコマンドを使用し、Stripeのイベントをローカルサーバーへ転送します。
+```bash
+        stripe listen --forward-to http://localhost/webhook/stripe
+```
+
+以下のコマンドでpayment_intent.succeededイベントを手動でトリガーし、/webhook/stripeに送信します。
+```bash
+        stripe trigger payment_intent.succeeded \
+        --add payment_intent:metadata.item_id=4 \    購入する商品のID
+        --add payment_intent:metadata.user_id=6      購入者ID
+```
+※ item_id と user_id は実際の購入処理からは自動で入らないため、テスト時には手動で指定します。
 
 ## ER 図
 
