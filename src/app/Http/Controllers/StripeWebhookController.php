@@ -14,7 +14,7 @@ class StripeWebhookController extends Controller
     {
         $payload = $request->getContent();
 
-        Log::info('Webhook 受信', ['payload' => $payload]);
+        // Log::info('Webhook 受信', ['payload' => $payload]);
 
         $event = json_decode($payload, true);
 
@@ -30,7 +30,7 @@ class StripeWebhookController extends Controller
             $item_id = $metadata['item_id'] ?? null;
 
             if (!$user_id || !$item_id) {
-                Log::warning('購入データのメタ情報が不足しています');
+                // Log::warning('購入データのメタ情報が不足しています');
                 return response()->json(['status' => 'missing metadata'], 400);
             }
 
@@ -47,7 +47,7 @@ class StripeWebhookController extends Controller
                     'destination'    => $metadata['destination'] ?? null,
                 ]);
 
-                Log::info("コンビニ支払い完了により購入保存: user_id=$user_id, item_id=$item_id");
+                // Log::info("コンビニ支払い完了により購入保存: user_id=$user_id, item_id=$item_id");
             }
         }
 

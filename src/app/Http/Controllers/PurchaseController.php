@@ -84,8 +84,8 @@ class PurchaseController extends Controller
                     ],
                 ],
             ]);
-            Log::debug('PaymentIntent:', $paymentIntent->toArray());
-            Log::debug('next_action:', (array) $paymentIntent->next_action);
+            // Log::debug('PaymentIntent:', $paymentIntent->toArray());
+            // Log::debug('next_action:', (array) $paymentIntent->next_action);
 
 
             $voucherUrl = $paymentIntent->next_action->konbini_display_details->hosted_voucher_url ?? null;
@@ -144,8 +144,8 @@ class PurchaseController extends Controller
 
     public function showKonbiniConfirm()
     {
-        logger('voucher_url: ' . session('voucher_url'));
-        logger('item_id: ' . session('item_id'));
+        // logger('voucher_url: ' . session('voucher_url'));
+        // logger('item_id: ' . session('item_id'));
 
         $voucher_url = session('voucher_url');
         $itemId = session('item_id');

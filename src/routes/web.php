@@ -55,8 +55,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/purchase/checkout', [PurchaseController::class, 'checkout'])->name('purchase.checkout');
     Route::get('/konbini/confirm', [PurchaseController::class, 'showKonbiniConfirm'])->name('konbini.confirm');
 });
-
-Route::get('/test-log', function () {
-    Log::info('これはテストログです！');
-    return 'ログ書いたよ！';
-});
