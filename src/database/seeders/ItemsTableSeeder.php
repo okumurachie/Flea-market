@@ -120,7 +120,6 @@ class ItemsTableSeeder extends Seeder
                 'description' => $data['description'],
                 'item_image' => 'storage/' . $data['item_image'],
                 'condition_id' => $data['condition_id'],
-                'shipping_status' => 0,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

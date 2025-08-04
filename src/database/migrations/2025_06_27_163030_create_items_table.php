@@ -23,7 +23,6 @@ class CreateItemsTable extends Migration
             $table->text('description');
             $table->integer('price');
             $table->string('item_image')->nullable();
-            $table->tinyInteger('shipping_status')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
