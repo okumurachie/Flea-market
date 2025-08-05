@@ -26,7 +26,7 @@
                             <p>{{$item->item_name}}</p>
                         </div>
                         @if($item->purchase)
-                        <span class="sold-label">Sold</span>
+                        <span class="sold-label"></span>
                         @endif
                     </div>
                 </div>

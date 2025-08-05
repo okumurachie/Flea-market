@@ -48,9 +48,35 @@
     justify-content: space-between;
 }
 .content__box__inner{
+    position: relative;
     width: 100%;
     height: auto;
     padding: 0;
+}
+.sold-label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 70px solid red;
+    border-right: 70px solid transparent;
+    z-index: 10;
+    text-align: center;
+    transform-origin: 0 0;
+    padding-top: 15px;
+}
+.sold-label::before{
+    content: "SOLD";
+    position: absolute;
+    top: -60px;
+    left: 3px;
+    transform: rotate(-45deg);
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    white-space: nowrap;
+    width: max-content;
 }
 .content__img{
     width: 100%;

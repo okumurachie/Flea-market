@@ -8,6 +8,9 @@
 <div class="item_content">
     <div class="item_content_img">
         <img src="{{asset($item['item_image'])}}" alt="{{$item['item_name']}}">
+        @if($item->purchase)
+        <span class="detail-sold-label"></span>
+        @endif
     </div>
     <div class="item_information">
         <h2 class="item_name">{{$item['item_name']}}</h2>
