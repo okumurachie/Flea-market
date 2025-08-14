@@ -3,13 +3,9 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
 use Symfony\Component\DomCrawler\Crawler;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\User;
@@ -175,5 +171,25 @@ class RegisterTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('プロフィール設定');
+    }
+
+    public function test_user_with_profile_redirects_to_homepage()
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $user->profile()->create([
+            'user_name' => 'Test User',
+            'post_code' => '123-4567',
+            'address' => '東京都渋谷区1-1-1',
+            'image' => 'test.jpg',
+            'profile_completed' => true,
+        ]);
+
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSee('おすすめ');
     }
 }
