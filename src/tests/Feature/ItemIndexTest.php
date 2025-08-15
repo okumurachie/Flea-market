@@ -4,6 +4,10 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Database\Seeders\UsersTableSeeder;
+use Database\Seeders\ConditionsTableSeeder;
+use Database\Seeders\CategoriesTableSeeder;
+use Database\Seeders\ItemsTableSeeder;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
@@ -17,14 +21,14 @@ class ItemIndexTest extends TestCase
      */
     public function test_guest_can_view_all_items()
     {
-        $users = User::factory()->count(10)->create();
-        $items = Item::factory()
-            ->count(10)
-            ->for($users->random())
-            ->withRandomCategories()
-            ->create();
+        $this->seed(UsersTableSeeder::class);
+        $this->seed(ConditionsTableSeeder::class);
+        $this->seed(CategoriesTableSeeder::class);
+        $this->seed(ItemsTableSeeder::class);
+
         $response = $this->get('/');
 
+        $items = Item::all();
         foreach ($items as $item) {
             $response->assertSee($item->item_name);
         }
