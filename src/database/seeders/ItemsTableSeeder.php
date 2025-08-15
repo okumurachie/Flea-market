@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use App\Models\Item;
+use App\Models\User;
 use App\Models\Category;
+use App\Models\Condition;
 
 
 class ItemsTableSeeder extends Seeder
@@ -17,7 +19,9 @@ class ItemsTableSeeder extends Seeder
      */
     public function run()
     {
-        $categories = Category::pluck('id')->toArray();
+        $categoryIds = Category::pluck('id')->toArray();
+        $userIds = User::pluck('id')->toArray();
+        $conditionIds = Condition::pluck('id')->toArray();
 
         $items = [
             [
@@ -113,17 +117,17 @@ class ItemsTableSeeder extends Seeder
         ];
         foreach ($items as $data) {
             $item = Item::create([
-                'user_id' => rand(1, 5),
+                'user_id' => $userIds[array_rand($userIds)],
                 'item_name' => $data['item_name'],
                 'price' => $data['price'],
                 'brand' => $data['brand'],
                 'description' => $data['description'],
                 'item_image' => 'storage/' . $data['item_image'],
-                'condition_id' => $data['condition_id'],
+                'condition_id' => $conditionIds[array_rand($conditionIds)],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-            $item->categories()->attach($data['category_id']);
+            $item->categories()->attach($categoryIds[array_rand($categoryIds)]);
         }
     }
 }
