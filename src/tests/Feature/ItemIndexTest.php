@@ -69,4 +69,27 @@ class ItemIndexTest extends TestCase
             }
         }
     }
+
+    public function test_user_cannot_see_their_own_items()
+    {
+        $user = User::factory()->create();
+        $items = Item::paginate(8);
+        $myItems = $items->take(2);
+
+        foreach ($myItems as $item) {
+            $item->update(['user_id' => $user->id]);
+        }
+
+        $otherItems = $items->skip(2);
+
+        $response = $this->actingAs($user)->get('/');
+
+        foreach ($myItems as $myItem) {
+            $response->assertDontSee($myItem->item_name);
+        }
+
+        foreach ($otherItems as $otherItem) {
+            $response->assertSee($otherItem->item_name);
+        }
+    }
 }
