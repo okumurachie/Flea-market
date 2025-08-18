@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\Condition;
 
 
-class ItemsTableSeeder extends Seeder
+class TestItemsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -123,11 +123,11 @@ class ItemsTableSeeder extends Seeder
                 'brand' => $data['brand'],
                 'description' => $data['description'],
                 'item_image' => 'storage/' . $data['item_image'],
-                'condition_id' => $data['condition_id'],
+                'condition_id' => $conditionIds[array_rand($conditionIds)],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);
-            $item->categories()->attach($data['category_id']);
+            $item->categories()->attach($categoryIds[array_rand($categoryIds)]);
         }
     }
 }

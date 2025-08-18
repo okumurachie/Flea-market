@@ -34,7 +34,7 @@ class Item extends Model
     }
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
     public function condition()
     {

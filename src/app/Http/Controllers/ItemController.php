@@ -91,7 +91,12 @@ class ItemController extends Controller
             $file->storeAs('public/images/items/', $fileName);
             $itemData['item_image'] = 'storage/images/items/' . $fileName;
         }
-        Item::create($itemData);
+        $item = Item::create($itemData);
+
+        if ($request->filled('category_ids')) {
+            $item->categories()->attach($request->input('category_ids'));
+        }
+
         return redirect('/')->with('message', '出品登録が完了しました');
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\ConditionsTableSeeder;
 use Database\Seeders\CategoriesTableSeeder;
-use Database\Seeders\ItemsTableSeeder;
+use Database\Seeders\TestItemsTableSeeder;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
@@ -28,7 +28,7 @@ class ItemIndexTest extends TestCase
         $this->seed(UsersTableSeeder::class);
         $this->seed(ConditionsTableSeeder::class);
         $this->seed(CategoriesTableSeeder::class);
-        $this->seed(ItemsTableSeeder::class);
+        $this->seed(TestItemsTableSeeder::class);
     }
 
     public function test_guest_can_view_all_items()
