@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\DomCrawler\Crawler;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\ConditionsTableSeeder;
@@ -12,7 +11,6 @@ use Database\Seeders\CategoriesTableSeeder;
 use Database\Seeders\ItemsTableSeeder;
 use App\Models\User;
 use App\Models\Item;
-use App\Models\Condition;
 use App\Models\Favorite;
 use App\Models\Purchase;
 
@@ -89,9 +87,21 @@ class MylistIndexTest extends TestCase
 
             if ($itemName === $purchasedItem->item_name) {
                 $this->assertTrue($hasSoldLabel);
-            } elseif (in_array($itemName, $favoriteItems->pluck('item_name')->toArray())) {
+            } elseif ($favoriteItems->pluck('item_name')->contains($itemName)) {
                 $this->assertFalse($hasSoldLabel);
             }
         });
+    }
+
+    public function test_mylist_not_visible_for_unauthenticated_users()
+    {
+        $items = Item::all();
+        $response = $this->get('/?tab=mylist');
+
+        foreach ($items as $item) {
+            $response->assertDontSee($item->item_name);
+        }
+
+        $response->assertSee('表示する商品がありません');
     }
 }
