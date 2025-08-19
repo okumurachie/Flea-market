@@ -3,16 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\ConditionsTableSeeder;
-use Database\Seeders\CategoriesTableSeeder;
+use Database\Seeders\TestCategoriesTableSeeder;
 use Database\Seeders\TestItemsTableSeeder;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Favorite;
-use App\Models\Purchase;
 
 class ItemSearchTest extends TestCase
 {
@@ -26,7 +24,7 @@ class ItemSearchTest extends TestCase
 
         $this->seed(UsersTableSeeder::class);
         $this->seed(ConditionsTableSeeder::class);
-        $this->seed(CategoriesTableSeeder::class);
+        $this->seed(TestCategoriesTableSeeder::class);
         $this->seed(TestItemsTableSeeder::class);
     }
 

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Database\Seeders\UsersTableSeeder;
 use Database\Seeders\ConditionsTableSeeder;
-use Database\Seeders\CategoriesTableSeeder;
+use Database\Seeders\TestCategoriesTableSeeder;
 use Database\Seeders\TestItemsTableSeeder;
 use Tests\TestCase;
 use App\Models\User;
@@ -27,7 +27,7 @@ class ItemIndexTest extends TestCase
 
         $this->seed(UsersTableSeeder::class);
         $this->seed(ConditionsTableSeeder::class);
-        $this->seed(CategoriesTableSeeder::class);
+        $this->seed(TestCategoriesTableSeeder::class);
         $this->seed(TestItemsTableSeeder::class);
     }
 
