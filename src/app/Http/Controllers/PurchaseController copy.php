@@ -7,7 +7,6 @@ use App\Http\Requests\PurchaseRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Purchase;
-use App\Services\StripeService;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
@@ -16,13 +15,6 @@ use Stripe\PaymentIntent;
 
 class PurchaseController extends Controller
 {
-    protected $stripe;
-
-    public function __construct(StripeService $stripe)
-    {
-        $this->stripe = $stripe;
-    }
-
     public function show($id)
     {
         $item = Item::findOrFail($id);
@@ -67,7 +59,7 @@ class PurchaseController extends Controller
             ]);
             return redirect($session->url);
         } elseif ($paymentMethod === 'konbini') {
-            $paymentIntent = $this->stripe->createKonbiniPayment([
+            $paymentIntent = PaymentIntent::create([
                 'payment_method_types' => ['konbini'],
                 'currency' => 'jpy',
                 'amount' => $item->price,
