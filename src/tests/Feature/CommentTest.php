@@ -66,5 +66,55 @@ class CommentTest extends TestCase
         ];
 
         $response = $this->post('/comments', $commentData);
+        $response->assertRedirect('/login');
+
+        $this->assertDatabaseMissing('comments', [
+            'item_id' => $item->id,
+            'comment' => 'Test comment',
+        ]);
+    }
+
+    public function test_submit_comments_fails_when_name_is_missing()
+    {
+        $user = User::first();
+        $item = Item::first();
+
+        $response = $this->actingAs($user)->get('/item/' .  $item->id);
+        $response->assertStatus(200);
+
+        $response = $this->from('/item/' .  $item->id)->post('/comments', [
+            'item_id' => $item->id,
+            'comment' => '',
+        ]);
+
+        $response->assertRedirect('/item/' .  $item->id);
+        $response->assertSessionHasErrors([
+            'comment' => 'コメントを入力してください'
+        ]);
+        $response = $this->get('/item/' .  $item->id);
+        $response->assertSee('コメントを入力してください');
+    }
+
+    public function test_submit_comments_fails_when_comment_too_long()
+    {
+        $user = User::first();
+        $item = Item::first();
+
+        $response = $this->actingAs($user)->get('/item/' .  $item->id);
+        $response->assertStatus(200);
+
+        $longComment = str_repeat('a', 256);
+
+        $response = $this->from('/item/' .  $item->id)->post('/comments', [
+            'item_id' => $item->id,
+            'comment' => $longComment,
+        ]);
+
+        $response->assertRedirect('/item/' .  $item->id);
+        $response->assertSessionHasErrors([
+            'comment' => 'コメントは255文字以内で入力してください'
+        ]);
+        $response = $this->get('/item/' .  $item->id);
+        $response->assertSee('コメントは255文字以内で入力してください');
     }
 }
