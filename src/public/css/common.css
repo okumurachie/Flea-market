@@ -114,3 +114,15 @@ body {
         max-width: 1540px;
     }
 }
+
+.alert.alert-success{
+    background-color: #000000;
+    color: #ffffff;
+    padding-left: 20px;
+}
+
+.alert.alert-danger{
+    background-color: red;
+    color: #000000;
+    padding-left: 20px;
+}

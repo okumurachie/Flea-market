@@ -110,8 +110,16 @@
                     item_id: itemId
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
+                return response.json();
+            })
+
             .then(data => {
+                if (!data) return;
                 const icon = document.getElementById('favorite-icon');
                 const count = document.getElementById('favorite-count');
 
@@ -128,7 +136,6 @@
                 count.textContent = data.count;
             })
             .catch(error => {
-                alert('ログインが必要です。会員登録がまだの方は、登録お願いします');
                 console.error(error);
             });
     }

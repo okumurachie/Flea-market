@@ -97,4 +97,41 @@ class PurchaseTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('https://stripe.test/voucher/123');
     }
+
+    public function test_payment_intent_succeeded_creates_purchase()
+    {
+        $user = User::first();
+        $item = Item::first();
+        $profile = $user->profile;
+
+        $payload = [
+            'id' => 'evt_test_123',
+            'object' => 'event',
+            'type' => 'payment_intent.succeeded',
+            'data' => [
+                'object' => [
+                    'id' => 'pi_test_123',
+                    'object' => 'payment_intent',
+                    'payment_method_types' => ['konbini'],
+                    'metadata' => [
+                        'item_id' => $item->id,
+                        'user_id' => $user->id,
+                        'post_code' => $profile->post_code,
+                        'destination' => $profile->address . ($profile->building ?? ''),
+                    ],
+                ],
+            ],
+        ];
+
+        $response = $this->postJson('/webhook/stripe', $payload);
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('purchases', [
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+            'payment_method' => 'konbini',
+            'post_code' => $profile->post_code,
+            'destination' => $profile->address . ($profile->building ?? ''),
+        ]);
+    }
 }
