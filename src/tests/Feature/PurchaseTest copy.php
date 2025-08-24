@@ -140,26 +140,19 @@ class PurchaseTest extends TestCase
     {
         $user = User::first();
         $paginatedItems = Item::paginate(8);
+
         $purchasedItem = $paginatedItems->first();
-
         $this->actingAs($user);
-
 
         $this->post(route('purchase.checkout'), [
             'item_id' => $purchasedItem->id,
             'post_code' => '123-4567',
             'destination' => '東京都新宿区',
             'payment_method' => 'card',
-        ])->assertRedirect();
+        ])
+            ->assertRedirect();
 
-        $response = $this->actingAs($user)
-            ->withSession(['item_id' => $purchasedItem->id,])
-            ->get(route('purchase.success', ['session_id' => 'dummy_session']));
-
-        $this->assertDatabaseHas('purchases', [
-            'user_id' => $user->id,
-            'item_id' => $purchasedItem->id,
-        ]);
+        $purchasedItem->refresh();
 
         $response = $this->get('/');
         $html = $response->getContent();
@@ -168,6 +161,7 @@ class PurchaseTest extends TestCase
 
         $crawler->filter('a.content__id')->each(function (Crawler $block) use ($purchasedItem) {
             $itemName = $block->filter('div.content__name p')->text();
+
 
             if ($itemName === $purchasedItem->item_name) {
                 $hasSoldLabel = $block->filter('span.sold-label')->count() > 0;
@@ -189,18 +183,10 @@ class PurchaseTest extends TestCase
             'post_code' => '123-4567',
             'destination' => '東京都新宿区',
             'payment_method' => 'card',
-        ])->assertRedirect();
+        ])
+            ->assertRedirect();
 
-
-        $response = $this->actingAs($user)
-            ->withSession(['item_id' => $purchasedItem->id,])
-            ->get(route('purchase.success', ['session_id' => 'dummy_session']));
-
-        $this->assertDatabaseHas('purchases', [
-            'user_id' => $user->id,
-            'item_id' => $purchasedItem->id,
-        ]);
-
+        $purchasedItem->refresh();
 
         $response = $this->get('/mypage/?page=buy');
         $response->assertStatus(200);

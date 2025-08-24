@@ -14,7 +14,6 @@ class StripeWebhookController extends Controller
     {
         $payload = $request->getContent();
 
-        // Log::info('Webhook 受信', ['payload' => $payload]);
 
         $event = json_decode($payload, true);
 
@@ -46,8 +45,6 @@ class StripeWebhookController extends Controller
                     'post_code'      => $metadata['post_code'] ?? null,
                     'destination'    => $metadata['destination'] ?? null,
                 ]);
-
-                // Log::info("コンビニ支払い完了により購入保存: user_id=$user_id, item_id=$item_id");
             }
         }
 
