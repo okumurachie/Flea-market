@@ -115,14 +115,12 @@ class PurchaseController extends Controller
                 abort(500, 'ユーザーが認証されていません');
             }
 
-            $profile = $user->profile;
-
             Purchase::create([
                 'user_id' => $user->id,
                 'item_id' => $item_id,
                 'payment_method' => 'card',
-                'post_code'      => $profile->post_code ?? '123-4567',
-                'destination'    => ($profile->address ?? '東京都新宿区') . ($profile->building ?? ''),
+                'post_code'      => '123-4567',
+                'destination'    => '東京都新宿区',
             ]);
 
             return redirect('/')->with('message', '購入しました。ありがとうございます。');
