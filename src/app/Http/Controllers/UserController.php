@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\AddressRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Models\Item;
-use App\Models\Favorite;
-use App\Models\Purchase;
 use App\Models\Profile;
 
 class UserController extends Controller
