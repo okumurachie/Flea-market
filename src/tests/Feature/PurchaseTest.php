@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Stripe\Stripe;
-use Stripe\PaymentIntent;
 use Symfony\Component\DomCrawler\Crawler;
 use Tests\TestCase;
 use Database\Seeders\UsersTableSeeder;
