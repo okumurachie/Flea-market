@@ -183,7 +183,7 @@
     color: #FF9494;
     margin-bottom: 30px;
 }
-.sell-form__btn{
+.sell-form__button{
     margin-top: 100px;
     background-color: #ff5555;
     width: 100%;
@@ -196,4 +196,8 @@
     text-align: center;
     margin-top: 60px;
     cursor: pointer;
+}
+
+.sell-form__button:hover {
+    background-color: #2779bd;
 }

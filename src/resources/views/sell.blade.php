@@ -124,7 +124,7 @@
                 </p>
             </div>
         </div>
-        <input type="submit" class="sell-form__btn" value="出品する">
+        <input type="submit" class="sell-form__button" value="出品する">
     </form>
 </div>
 
