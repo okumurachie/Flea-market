@@ -39,9 +39,10 @@
 ---
 ## ユーザーのログイン情報
 シーディングで、デフォルトのユーザーを作成
-name:Test User
-email:test@example.com
-password:abcd1234
+
+- name:Test User
+- email:test@example.com
+- password:abcd1234
 
 ---
 ## 購入データの保存（コンビニ支払いの場合）
