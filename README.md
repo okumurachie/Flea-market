@@ -30,7 +30,7 @@
 - 5.php artisan migrate
 - 6.php artisan db:seed
 
-## 使用技術
+## 使用技術（実行環境）
 - PHP 8.4.8
 - Laravel 10.48.29
 - MySQL 8.0
