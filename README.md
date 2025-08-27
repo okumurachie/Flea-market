@@ -37,6 +37,13 @@
 - nginx 1.21.1
 
 ---
+## ユーザーのログイン情報
+シーディングで、デフォルトのユーザーを作成
+name:Test User
+email:test@example.com
+password:abcd1234
+
+---
 ## 購入データの保存（コンビニ支払いの場合）
 コンビニ支払いはカード決済と異なり、即時に支払いが確定しないため、StripeのWebhookを使用し、支払い完了後に購入データを保存する仕組みを構築しました。StripeWebhookController を作成し、payment_intent.succeeded イベント受信時に購入データを保存する処理を実装しました。
 
