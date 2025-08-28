@@ -5,8 +5,8 @@
 @endsection
 
 @section('content')
-<div class="market_content">
-    <div class="market_content__inner">
+<div class="market">
+    <div class="market__inner">
         <div class="lists">
             <a href="{{ route('home', ['tab' => 'recommend','keyword' => request('keyword')]) }}" class="recommend {{ $tab === 'recommend' ? 'active' : '' }}">おすすめ</a>
             <a href="{{ route('home', ['tab' => 'mylist', 'keyword' => request('keyword')]) }}" class="my_list {{ $tab === 'mylist' ? 'active' : '' }}">マイリスト</a>
