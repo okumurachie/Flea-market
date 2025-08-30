@@ -54,18 +54,20 @@
             <h3>商品の情報</h3>
             <div class="item-categories">
                 <h4 class="categories">カテゴリー</h4>
-                @foreach($item->categories as $category)
-                <p class="category-tag">{{ $category->content}}</p>
-                @endforeach
+                <div class="categories-wrap">
+                    @foreach($item->categories as $category)
+                    <p class="category-tag">{{ $category->content}}</p>
+                    @endforeach
+                </div>
             </div>
             <div class="item-condition">
                 <h4 class="condition">商品の状態</h4>
                 <p class="condition-tag">{{$item->condition->condition}}</p>
             </div>
         </div>
-        <div class="commemts-of-item">
+        <div class="comments-of-item">
             <h3>コメント({{$item->comments()->count()}})</h3>
-            <div class="commets-by-users">
+            <div class="comments-by-users">
                 @foreach($item->comments as $comment)
                 <div class="comment-block">
                     <div class="user_images">

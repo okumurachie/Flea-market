@@ -128,16 +128,6 @@
 .fas fa-star{
     color: gold;
 }
-.category-teg {
-    display: inline-block;
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 6px 12px;
-    margin: 4px 6px 0 0;
-    border-radius: 16px;
-    font-size: 20px;
-    border: none;
-}
 h3{
     font-size: 36px;
     font-weight: 700;
@@ -146,7 +136,6 @@ h3{
     font-size: 24px;
     font-weight: 400;
 }
-.item-categories,
 .item-condition{
     display: flex;
     flex-direction: row;
@@ -154,12 +143,27 @@ h3{
     margin-top: 0;
     gap: 60px;
 }
+.item-categories{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 0;
+    gap: 60px;
+}
+
+.categories-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 20px;
+    margin: 0;
+}
+
 .category-tag{
+    margin: 0;
     font-weight: 400;
     background-color: #f0f0f0;
     border-radius: 15px;
     width: auto;
-    height: 100%;
     padding: 2px 15px;
     line-height: 30px;
     border: none;
@@ -176,8 +180,10 @@ h4{
     line-height: 30px;
     font-size: 24px;
     font-weight: 700;
+    width: auto;
+    white-space: nowrap;
 }
-.commemts-of-item{
+.comments-of-item{
     margin-bottom: 25px;
 }
 .comment-block{
