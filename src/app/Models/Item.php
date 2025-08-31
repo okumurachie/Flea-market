@@ -21,11 +21,9 @@ class Item extends Model
         'description',
         'price',
         'item_image',
-        'shipping_status'
     ];
     protected $casts = [
-        'display_date',
-        'deleted_at'
+        'deleted_at' => 'datetime',
     ];
 
     public function user()

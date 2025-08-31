@@ -131,6 +131,7 @@ class PurchaseController extends Controller
         if (!$session_id) {
             return redirect('/')->with('error', '決済情報が取得できませんでした。');
         }
+
         Stripe::setApiKey(config('stripe.stripe_secret_key'));
 
         try {
@@ -147,6 +148,7 @@ class PurchaseController extends Controller
             }
 
             $paymentMethod = $session->payment_method_types[0] ?? 'unknown';
+
             if ($paymentMethod === 'card') {
                 $alreadyPurchased = Purchase::where('user_id', $user_id)
                     ->where('item_id', $item_id)

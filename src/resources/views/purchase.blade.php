@@ -79,7 +79,7 @@
                     ][$rawValue] ?? '選択してください';
                     @endphp
                     <th class="table-th">支払い方法</th>
-                    <td class="table-td-payment" id="payment-method-display">{{ $paymentMethodLabel ?? '選択してください'}}</td>
+                    <td class="table-td-payment" id="payment-method-display">{{ $paymentMethodLabel}}</td>
                 </tr>
             </table>
             <div class="purchase-form__button">
