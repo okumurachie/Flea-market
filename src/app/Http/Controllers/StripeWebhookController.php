@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
 use Stripe\Stripe;
-use Illuminate\Support\Facades\Log;
 
 
 class StripeWebhookController extends Controller
