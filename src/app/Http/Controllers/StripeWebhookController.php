@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Purchase;
-use Stripe\Stripe;
 
 
 class StripeWebhookController extends Controller
