@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Stripe\FinancialConnections\Transaction;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -56,5 +57,71 @@ class User extends Authenticatable implements MustVerifyEmail
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+
+    public function receivedReviews()
+    {
+        $buyerReviews = TransactionMessage::whereHas('purchase', function ($query) {
+            $query->where('user_id', $this->id);
+        })
+            ->where('message_type', TransactionMessage::TYPE_REVIEW)
+            ->where('sender_id', '!=', $this->id);
+
+        $sellerReviews = TransactionMessage::whereHas('purchase.item', function ($query) {
+            $query->where('user_id', $this->id);
+        })
+            ->where('message_type', TransactionMessage::TYPE_REVIEW)
+            ->where('sender_id', '!=', $this->id);
+
+        return $buyerReviews->union($sellerReviews);
+    }
+
+    public function givenReviews()
+    {
+        return TransactionMessage::where('sender_id', $this->id)
+            ->where('message_type', TransactionMessage::TYPE_REVIEW);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        // 受け取った評価の平均を計算
+        $reviews = TransactionMessage::where('message_type', TransactionMessage::TYPE_REVIEW)
+            ->where(function ($query) {
+                // 購入者として受けた評価
+                $query->whereHas('purchase', function ($subquery) {
+                    $subquery->where('user_id', $this->id);
+                })
+                    // または出品者として受けた評価
+                    ->orWhereHas('purchase.item', function ($subquery) {
+                        $subquery->where('user_id', $this->id);
+                    });
+            })
+            ->where('sender_id', '!=', $this->id);
+
+        $average = $reviews->avg('rating');
+        return $average ? round($average) : null;
+    }
+
+    /**
+     * 評価数を取得
+     */
+    public function getReviewCountAttribute()
+    {
+        $count = TransactionMessage::where('message_type', TransactionMessage::TYPE_REVIEW)
+            ->where(function ($query) {
+                // 購入者として受けた評価
+                $query->whereHas('purchase', function ($subquery) {
+                    $subquery->where('user_id', $this->id);
+                })
+                    // または出品者として受けた評価
+                    ->orWhereHas('purchase.item', function ($subquery) {
+                        $subquery->where('user_id', $this->id);
+                    });
+            })
+            ->where('sender_id', '!=', $this->id)
+            ->count();
+
+        return $count;
     }
 }

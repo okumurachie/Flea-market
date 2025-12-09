@@ -29,6 +29,12 @@ body {
     grid-template-rows: 1fr;
 }
 
+ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 .header-logo__group{
     width: 90%;
     padding-left: 40px;
@@ -76,11 +82,13 @@ body {
     text-decoration: none;
     cursor: pointer;
     text-align: center;
+    white-space: nowrap;
 }
 .form,
 .for-login-form,
 .mypage{
     width: 30%;
+    min-width: 90px;
     height: 47px;
     line-height: 47px;
     color: #ffffff;
@@ -91,9 +99,13 @@ body {
     font-weight: 400;
     color: #ffffff;
     background-color: #000000;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
 }
 .put-up_items{
     width: 25%;
+    min-width: 70px;
     height: 50px;
     line-height: 50px;
     background-color: #ffffff;
@@ -103,18 +115,6 @@ body {
     width: 100%;
     margin: 0 auto;
 }
-@media (min-width: 768px) {
-    .content {
-        flex-direction: row;
-        }
-}
-
-@media (min-width: 1400px) {
-    .content {
-        max-width: 1540px;
-    }
-}
-
 .alert.alert-success{
     background-color: #000000;
     color: #ffffff;
@@ -125,4 +125,59 @@ body {
     background-color: red;
     color: #000000;
     padding-left: 20px;
+}
+
+/* タブレット対応 (768px - 850px) */
+@media (max-width: 850px) {
+    .header-logo__group {
+        width: 90%;
+    }
+
+    .search-field {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .search-form__keyword-input {
+        font-size: 16px;
+        padding-left: 15px;
+    }
+
+    .header__link {
+        gap: 15px;
+        padding-right: 20px;
+    }
+
+    .form,
+    .for-login-form,
+    .mypage,
+    .put-up_items {
+        font-size: 16px;
+    }
+
+    .header-nav__button {
+        font-size: 16px;
+    }
+
+    .form,
+    .for-login-form,
+    .mypage {
+        min-width: 70px;
+    }
+
+    .put-up_items {
+        min-width: 60px;
+    }
+}
+@media (min-width: 851px) and (max-width: 1040px){
+    .search-form__keyword-input{
+    font-weight: 400;
+    font-size: 18px;
+}
+}
+/* PC対応 (1400px - 1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .content {
+        max-width: 1540px;
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\AddressRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use App\Models\Purchase;
 use App\Models\Profile;
 
 class UserController extends Controller
@@ -48,21 +49,64 @@ class UserController extends Controller
         $page = $request->query('page', 'sell');
         $user = Auth::user();
         $profile = $user->profile;
+
+        $averageRating = $user->average_rating;
+        $reviewCount = $user->review_count;
+
+        $totalUnreadCount = Purchase::where(function ($query) use ($user) {
+            $query->where('user_id', $user->id)
+                ->orWhereHas('item', function ($subquery) use ($user) {
+                    $subquery->where('user_id', $user->id);
+                });
+        })
+            ->withCount([
+                'messages as unread_count' => function ($query) use ($user) {
+                    $query->where('sender_id', '!=', $user->id)
+                        ->where('is_read', false);
+                }
+            ])
+            ->get()
+            ->sum('unread_count');
+
         $items = collect();
         $purchases = collect();
+        $transactions = collect();
+
         if ($page === 'buy') {
             $purchases = $user->purchases()
                 ->with('item')
                 ->latest()
                 ->paginate(8)
                 ->appends(request()->except('page'));
-        } else {
+        } elseif ($page === 'sell') {
             $items = $user->items()
                 ->latest()
                 ->paginate(8)
                 ->appends(request()->except('page'));
+        } elseif ($page === 'transaction') {
+            $transactions = Purchase::where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhereHas('item', function ($subquery) use ($user) {
+                        $subquery->where('user_id', $user->id);
+                    });
+            })
+                ->with([
+                    'item.user',
+                    'user',
+                    'lastMessage'
+                ])
+                ->withCount([
+                    'messages as unread_count' => function ($query) use ($user) {
+                        $query->where('sender_id', '!=', $user->id)
+                            ->where('is_read', false);
+                    }
+                ])
+                ->orderByDesc('last_message_at')
+                ->orderByDesc('created_at')
+                ->paginate(8)
+                ->appends(request()->except('page'));
         }
-        return view('mypage', compact('profile', 'items', 'purchases', 'page'));
+        return view('mypage', compact('profile', 'items', 'purchases', 'transactions', 'page',  'averageRating', 'reviewCount', 'totalUnreadCount'));
     }
 
     public function profile()

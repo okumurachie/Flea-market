@@ -13,6 +13,7 @@ class Item extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
+        'item_code',
         'user_id',
         'item_name',
         'category_id',

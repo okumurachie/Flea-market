@@ -18,42 +18,48 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create('ja_JP');
-        $testUser = User::create([
-            'id' => 1,
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('abcd1234'),
-            'remember_token' => Str::random(10),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
 
-        Profile::create([
-            'user_id' => $testUser->id,
-            'user_name' => 'Test User',
-            'post_code' => $faker->numerify('###-####'),
-            'address' => $faker->prefecture() . $faker->city() . $faker->streetAddress(),
-            'building' => $faker->secondaryAddress(),
-            'image' => 'storage/images/ProfilesSeeder/user1.png',
-            'profile_completed' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $testUsers = [
+            [
+                'name' => 'Test User1',
+                'email' => 'test1@example.com',
+                'password' => 'abcd1234',
+            ],
+            [
+                'name' => 'Test User2',
+                'email' => 'test2@example.com',
+                'password' => 'abcd5678',
+            ],
+            [
+                'name' => 'Test User3',
+                'email' => 'test3@example.com',
+                'password' => 'abcd4321',
+            ],
+        ];
 
-        User::factory()
-            ->count(4)
-            ->create()
-            ->each(function ($user) use ($faker) {
-                Profile::create([
-                    'user_id' => $user->id,
-                    'user_name' => $user->name,
-                    'post_code' => $faker->numerify('###-####'),
-                    'address' => $faker->prefecture() . $faker->city() . $faker->streetAddress(),
-                    'building' => $faker->secondaryAddress(),
-                    'image' => 'storage/images/ProfilesSeeder/user' . $user->id . '.png',
-                    'profile_completed' => true,
-                ]);
-            });
+        foreach ($testUsers as $index => $userData) {
+            $user = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'email_verified_at' => now(),
+                'password' => Hash::make($userData['password']),
+                'remember_token' => Str::random(10),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            Profile::create([
+                'user_id' => $user->id,
+                'user_name' => $userData['name'],
+                'post_code' => $faker->numerify('###-####'),
+                'address' => $faker->prefecture() . $faker->city() . $faker->streetAddress(),
+                'building' => $faker->secondaryAddress(),
+                'image' => 'storage/images/ProfilesSeeder/user' . $user->id . '.png',
+                'profile_completed' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+
+            ]);
+        }
     }
 }

@@ -20,6 +20,19 @@
                 </div>
                 <div class="user_name">
                     <h2>{{$profile->user_name}}</h2>
+                    @if($reviewCount > 0)
+                    <div class="user-rating">
+                        <div class="rating-stars">
+                            @for($i =1; $i <= 5; $i++ )
+                                @if($i <=$averageRating)
+                                <span class="star filled">★</span>
+                                @else
+                                <span class="star">★</span>
+                                @endif
+                                @endfor
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
             <div class="edit-profile">
@@ -31,6 +44,12 @@
         <div class="lists">
             <a href="{{ route('mypage', ['page' => 'sell']) }}" class="sell {{ $page === 'sell' ? 'active' : '' }}">出品した商品</a>
             <a href="{{ route('mypage', ['page' => 'buy']) }}" class="buy {{ $page === 'buy' ? 'active' : '' }}">購入した商品</a>
+            <a href="{{ route('mypage', ['page' => 'transaction']) }}" class="transaction {{ $page === 'transaction' ? 'active' : '' }}">
+                取引中の商品
+                @if($totalUnreadCount > 0)
+                <span class="tab-notification-badge">{{ $totalUnreadCount }}</span>
+                @endif
+            </a>
         </div>
 
         <div class="mypage-content__box">
@@ -49,6 +68,7 @@
             </div>
             @endforeach
             @endif
+
             @elseif($page === 'buy')
             @if($purchases->isEmpty())
             <p>購入履歴はありません</p>
@@ -64,6 +84,24 @@
             </div>
             @endforeach
             @endif
+
+            @elseif($page === 'transaction')
+            @if($transactions->isEmpty())
+            <p>取引中の商品はありません</p>
+            @else
+            @foreach($transactions as $transaction)
+            <a href="" class="mypage-content__box-item transaction-item">
+                <div class="content__img">
+                    @if($transaction->unread_count > 0)
+                    <div class="image-notification-badge">
+                        <span class="badge-count">{{ $transaction->unread_count }}</span>
+                    </div>
+                    @endif
+                    <img src="{{ asset($transaction->item->item_image ?: 'images/NoImage.png') }}" alt="{{ $transaction->item->item_name }}">
+                </div>
+            </a>
+            @endforeach
+            @endif
             @endif
         </div>
     </div>
@@ -74,6 +112,8 @@
     {{$items->appends(request()->except('page'))->links('vendor.pagination.default')}}
     @elseif($page === 'buy' && method_exists($purchases, 'links'))
     {{$purchases->appends(request()->except('page'))->links('vendor.pagination.default') }}
+    @elseif($page === 'transaction' && method_exists($transactions, 'links'))
+    {{$transactions->appends(request()->except('page'))->links('vendor.pagination.default') }}
     @endif
 </div>
 @endsection

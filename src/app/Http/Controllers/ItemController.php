@@ -85,6 +85,14 @@ class ItemController extends Controller
         $itemData = $request->validated();
         $itemData['user_id'] = Auth::id();
 
+        $latestItem = Item::latest('id')->first();
+        if ($latestItem && preg_match('/CO(\d+)/', $latestItem->item_code, $matches)) {
+            $number = (int)$matches[1] + 1;
+        } else {
+            $number = 1;
+        }
+        $itemData['item_code'] = 'CO' . str_pad($number, 3, '0', STR_PAD_LEFT);
+
         if ($request->hasFile('item_image')) {
             $file = $request->file('item_image');
             $fileName = time() . '_' . $file->getClientOriginalName();

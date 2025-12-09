@@ -20,6 +20,8 @@ class CreatePurchasesTable extends Migration
             $table->string('payment_method');
             $table->string('post_code');
             $table->string('destination');
+            $table->timestamp('last_message_at')->nullable();
+            $table->enum('transaction_status', ['in_progress', 'buyer_completed', 'completed'])->default('in_progress');
             $table->timestamps();
         });
     }

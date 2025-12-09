@@ -19,12 +19,13 @@ class ItemsTableSeeder extends Seeder
      */
     public function run()
     {
-        $categoryIds = Category::pluck('id')->toArray();
-        $userIds = User::pluck('id')->toArray();
-        $conditionIds = Condition::pluck('id')->toArray();
+        $user1 = User::where('email', 'test1@example.com')->first();
+        $user2 = User::where('email', 'test2@example.com')->first();
 
         $items = [
             [
+                'item_code' => 'CO01',
+                'user_id' => $user1->id,
                 'item_name' => '腕時計',
                 'price' => 15000,
                 'brand' => 'Rolax',
@@ -34,6 +35,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [1, 5],
             ],
             [
+                'item_code' => 'CO02',
+                'user_id' => $user1->id,
                 'item_name' => 'HDD',
                 'price' => 5000,
                 'brand' => '西芝',
@@ -43,6 +46,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [2],
             ],
             [
+                'item_code' => 'CO03',
+                'user_id' => $user1->id,
                 'item_name' => '玉ねぎ3束',
                 'price' => 300,
                 'brand' => '',
@@ -52,6 +57,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [10],
             ],
             [
+                'item_code' => 'CO04',
+                'user_id' => $user1->id,
                 'item_name' => '革靴',
                 'price' => 4000,
                 'brand' => '',
@@ -61,6 +68,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [1, 5],
             ],
             [
+                'item_code' => 'CO05',
+                'user_id' => $user1->id,
                 'item_name' => 'ノートPC',
                 'price' => 45000,
                 'brand' => '',
@@ -70,6 +79,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [2],
             ],
             [
+                'item_code' => 'CO06',
+                'user_id' => $user2->id,
                 'item_name' => 'マイク',
                 'price' => 8000,
                 'brand' => '',
@@ -79,6 +90,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [2],
             ],
             [
+                'item_code' => 'CO07',
+                'user_id' => $user2->id,
                 'item_name' => 'ショルダーバッグ',
                 'price' => 3500,
                 'brand' => '',
@@ -88,6 +101,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [1, 4],
             ],
             [
+                'item_code' => 'CO08',
+                'user_id' => $user2->id,
                 'item_name' => 'タンブラー',
                 'price' => 500,
                 'brand' => '',
@@ -97,6 +112,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [10],
             ],
             [
+                'item_code' => 'CO09',
+                'user_id' => $user2->id,
                 'item_name' => 'コーヒーミル',
                 'price' => 4000,
                 'brand' => 'Starbacks',
@@ -106,6 +123,8 @@ class ItemsTableSeeder extends Seeder
                 'category_id' => [3, 10],
             ],
             [
+                'item_code' => 'CO10',
+                'user_id' => $user2->id,
                 'item_name' => 'メイクセット',
                 'price' => 2500,
                 'brand' => '',
@@ -117,7 +136,8 @@ class ItemsTableSeeder extends Seeder
         ];
         foreach ($items as $data) {
             $item = Item::create([
-                'user_id' => $userIds[array_rand($userIds)],
+                'item_code' => $data['item_code'],
+                'user_id' => $data['user_id'],
                 'item_name' => $data['item_name'],
                 'price' => $data['price'],
                 'brand' => $data['brand'],

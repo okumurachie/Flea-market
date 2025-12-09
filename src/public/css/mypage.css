@@ -24,9 +24,30 @@
     border-radius: 50%;
     border: 2px solid #ccc;
 }
+.user_name {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .user_name h2{
     font-size: 36px;
     font-weight: 700;
+    margin: 0;
+}
+.user-rating {
+    display: flex;
+    align-items: center;
+}
+.rating-stars {
+    display: flex;
+    gap: 2px;
+}
+.rating-stars .star {
+    font-size: 24px;
+    color: #ddd;
+}
+.rating-stars .star.filled {
+    color: #ffd700;
 }
 .edit-profile{
     display: block;
@@ -41,7 +62,7 @@
     font-weight: 700;
     color: #ff5555;
     border: 2px solid #ff5555;
-    border-radius: 2px;
+    border-radius: 8px;
     cursor: pointer;
 }
 .edit-profile__link:hover {
@@ -56,7 +77,8 @@
     margin: 70px 0;
 }
 .sell,
-.buy{
+.buy,
+.transaction{
     font-size: 24px;
     font-weight: 700;
     text-decoration: none;
@@ -64,8 +86,26 @@
     color: #5f5f5f;
 }
 .sell.active,
-.buy.active{
+.buy.active,
+.transaction.active{
     color: #ff0000;
+}
+/* タブの通知バッジ（"取引中の商品"タブの右上） */
+.tab-notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -25px;
+    background-color: #ff0000;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 6px;
 }
 
 .mypage-content__box{
@@ -91,6 +131,26 @@
 .content__img{
     width: 100%;
     height: auto;
+    position: relative;
+}
+.image-notification-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #ff0000;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 10;
+}
+.badge-count {
+    line-height: 1;
 }
 .content__img img {
     width: 100%;
@@ -155,4 +215,113 @@
 
 .custom-pagination a:hover {
     background-color: #eee;
+}
+
+/* タブレット対応 (768px - 850px) */
+@media (max-width: 850px) {
+    .profile__box {
+        width: 85%;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .profile__content {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .edit-profile {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .lists {
+        gap: 40px;
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .sell,
+    .buy,
+    .transaction {
+        font-size: 20px;
+    }
+
+    .mypage-content__box {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .profile__content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .user_name {
+        align-items: center;
+    }
+
+    .lists {
+        gap: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        justify-content: space-around;
+    }
+
+    .sell,
+    .buy,
+    .transaction {
+        font-size: 18px;
+    }
+
+    .mypage-content__box {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .content__name p {
+        font-size: 18px;
+    }
+}
+@media (min-width: 851px) and (max-width: 1169px){
+    .user_name h2{
+    font-size: 20px;
+    font-weight: 400;
+    white-space: nowrap;
+    margin: 0;
+    }
+    .edit-profile__link{
+        font-size: 16px;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+}
+
+
+/* PC対応 (1400px - 1540px) */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .profile__box {
+        width: 75%;
+    }
+
+    .lists {
+        padding-left: 150px;
+    }
+
+    .mypage-content__box {
+        width: 85%;
+    }
+}
+
+/* 大画面対応 */
+@media (min-width: 1540px) {
+    .profile__box {
+        width: 70%;
+        max-width: 1200px;
+    }
+
+    .mypage-content__box {
+        width: 90%;
+        max-width: 1400px;
+    }
 }
