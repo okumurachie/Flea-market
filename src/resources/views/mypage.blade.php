@@ -90,7 +90,7 @@
             <p>取引中の商品はありません</p>
             @else
             @foreach($transactions as $transaction)
-            <a href="" class="mypage-content__box-item transaction-item">
+            <a href="{{route('chat.show', $transaction->id)}}" class="mypage-content__box-item transaction-item">
                 <div class="content__img">
                     @if($transaction->unread_count > 0)
                     <div class="image-notification-badge">

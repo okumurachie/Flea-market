@@ -16,6 +16,7 @@ class TransactionMessage extends Model
         'sender_id',
         'message_type',
         'message',
+        'chat_image',
         'rating',
         'is_read',
     ];

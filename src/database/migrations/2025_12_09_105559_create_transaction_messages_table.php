@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->enum('message_type', ['text', 'completion', 'review'])->default('text');
             $table->text('message')->nullable();
+            $table->string('chat_image')->nullable();
             $table->tinyInteger('rating')->nullable();
             $table->boolean('is_read')->default(false);
             $table->index(['purchase_id', 'created_at']);

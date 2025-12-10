@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -54,4 +55,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/purchase/{id}', [UserController::class, 'editAddress'])->name('address.update');
     Route::post('/purchase/checkout', [PurchaseController::class, 'checkout'])->name('purchase.checkout');
     Route::get('/konbini/confirm', [PurchaseController::class, 'showKonbiniConfirm'])->name('konbini.confirm');
+    Route::get('/chat/{purchase}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{purchase}/message', [ChatController::class, 'store'])->name('chat.store');
 });
