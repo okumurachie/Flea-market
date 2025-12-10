@@ -24,7 +24,7 @@ class ChatController extends Controller
             ->orderByDesc('last_message_at')
             ->get();
 
-        return view('chat', compact('purchase', 'messages', 'transactions'));
+        return view('chat', compact('purchase', 'messages', 'transactions', 'user'));
     }
 
     public function store(ChatMessageReauest $request, Purchase $purchase)
