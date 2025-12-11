@@ -40,7 +40,6 @@
             </div>
         </div>
         @endif
-
         <div class="lists">
             <a href="{{ route('mypage', ['page' => 'sell']) }}" class="sell {{ $page === 'sell' ? 'active' : '' }}">出品した商品</a>
             <a href="{{ route('mypage', ['page' => 'buy']) }}" class="buy {{ $page === 'buy' ? 'active' : '' }}">購入した商品</a>

@@ -39,7 +39,7 @@ class Purchase extends Model
 
     public function messages()
     {
-        return $this->hasMany(TransactionMessage::class);
+        return $this->hasMany(TransactionMessage::class, 'purchase_id');
     }
 
     public function textMessages()

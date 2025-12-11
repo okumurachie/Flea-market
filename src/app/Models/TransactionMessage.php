@@ -32,7 +32,7 @@ class TransactionMessage extends Model
 
     public function purchase()
     {
-        return $this->belongsTo(Purchase::class);
+        return $this->belongsTo(Purchase::class, 'purchase_id');
     }
 
     public function sender()

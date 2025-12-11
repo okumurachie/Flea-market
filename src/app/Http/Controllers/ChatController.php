@@ -17,6 +17,10 @@ class ChatController extends Controller
         if ($purchase->user_id !== $user->id && $purchase->item->user_id !== $user->id) {
             abort(403, '権限がありません');
         }
+        $purchase->messages()
+            ->where('sender_id', '!=', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
 
         $messages = $purchase->messages()->orderBy('created_at', 'asc')->get();
         $transactions = Purchase::where('user_id', AUth::id())
@@ -36,7 +40,7 @@ class ChatController extends Controller
             $file = $request->file('image');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('public/images/ChatImages/', $fileName);
-            $imagePath['chat_image'] = 'storage/images/ChatImages/' . $fileName;
+            $imagePath = 'storage/images/ChatImages/' . $fileName;
         }
 
         TransactionMessage::create([

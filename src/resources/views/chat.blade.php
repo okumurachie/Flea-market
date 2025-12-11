@@ -24,18 +24,23 @@
     <div class="chat-content">
         <div class="user-info-block">
             <div class="user-info--wrapper">
+                @php
+                $buyer = $purchase->user;
+                $seller = $purchase->item->user;
+                $partner = (Auth::id() === $buyer->id) ? $seller : $buyer;
+                @endphp
                 <div class="user-images">
                     <img
-                        src="{{ asset(optional($transaction->user->profile)->image ?? 'images/default.png') }}"
-                        alt="{{ optional($transaction->user->profile)->user_name ?? 'ユーザー' }}"
+                        src="{{ asset(optional($partner->profile)->image ?? 'images/default.png') }}"
+                        alt="{{ optional($purchase->user->profile)->user_name ?? 'ユーザー' }}"
                         class="user-icon">
                 </div>
                 <h2 class="chatpage-title">
-                    {{ optional($transaction->user->profile)->user_name }}さんとの取引画面
+                    {{ optional($partner->profile)->user_name }}さんとの取引画面
                 </h2>
             </div>
 
-            @if((string)Auth::id() === (string)$transaction->user_id)
+            @if((string)Auth::id() === (string)$purchase->user_id)
             <form action="" method="POST" class="complete-form">
                 @csrf
                 <button class="complete-button">取引を完了する</button>
@@ -44,30 +49,30 @@
         </div>
         <div class="item-info-block">
             <div class="item_img">
-                <img src="{{ asset($transaction->item->item_image ?: 'images/NoImage.png') }}" alt="{{ $transaction->item->item_name }}">
+                <img src="{{ asset($purchase->item->item_image ?: 'images/NoImage.png') }}" alt="{{ $purchase->item->item_name }}">
             </div>
             <div class="item_detail">
-                <h1 class="item-of-name">{{ $transaction->item->item_name }}</h1>
-                <p class="item-of-price">¥{{ number_format($transaction->item->price) }}</p>
+                <h1 class="item-of-name">{{ $purchase->item->item_name }}</h1>
+                <p class="item-of-price">¥{{ number_format($purchase->item->price) }}</p>
             </div>
         </div>
 
         <div class="chat-block" id="chatBlock">
             @forelse($messages as $message)
-            @if($message->user_id !== Auth::id())
+            @if($message->sender_id !== Auth::id())
             <div class="message">
                 <div class="message-header">
                     <img
-                        src="{{asset(optional($transaction->user->profile)->image ?? 'images/default.png')}}"
+                        src="{{asset(optional($purchase->user->profile)->image ?? 'images/default.png')}}"
                         class="user-icon-image">
-                    <p class="user-name">{{ optional($transaction->user->pofile)->user_name }}</p>
+                    <p class="user-name">{{ optional($purchase->user->pofile)->user_name }}</p>
                 </div>
                 <div class="message-space">
-                    {!! nl2br(e($message->text)) !!}
+                    {!! nl2br(e($message->message)) !!}
                 </div>
-                @if($message->image)
+                @if($message->chat_image)
                 <div class="image-space">
-                    <img src="{{ asset($message->image) }}" class="message-image">
+                    <img src="{{ asset($message->chat_image) }}" class="message-image">
                 </div>
                 @endif
             </div>
@@ -78,17 +83,18 @@
                     <img id="preview" src="{{ asset(Auth::user()->profile->image ?? 'images/default.png') }}" class="user-icon-image">
                 </div>
                 <div class="message-space own">
-                    {!! nl2br(e($message->text)) !!}
+                    {!! nl2br(e($message->message)) !!}
                 </div>
-                @if($message->image)
+                @if($message->chat_image)
                 <div class="image-space own">
-                    <img src="{{ asset($message->image) }}" class="message-image">
+                    <img src="{{ asset($message->chat_image) }}" class="message-image">
                 </div>
                 @endif
                 <div class="button-group">
-                    <form action="{{ route('chat.delete', $message->id) }}" method="POST">
+                    <form action="" method="POST">
                         @csrf
                         @method('DELETE')
+                        <a href="" class="message-edit">編集</a>
                         <button class="chat-delete">削除</button>
                     </form>
                 </div>
@@ -99,7 +105,7 @@
             @endforelse
         </div>
 
-        <form action="{{route('chat.store', $transaction->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('chat.store', $purchase->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="chat-input-block">
                 @if ($errors->any())

@@ -53,12 +53,13 @@ class UserController extends Controller
         $averageRating = $user->average_rating;
         $reviewCount = $user->review_count;
 
-        $totalUnreadCount = Purchase::where(function ($query) use ($user) {
-            $query->where('user_id', $user->id)
-                ->orWhereHas('item', function ($subquery) use ($user) {
-                    $subquery->where('user_id', $user->id);
-                });
-        })
+        $totalUnreadCount = Purchase::where('transaction_status', 'in_progress')
+            ->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhereHas('item', function ($subquery) use ($user) {
+                        $subquery->where('user_id', $user->id);
+                    });
+            })
             ->withCount([
                 'messages as unread_count' => function ($query) use ($user) {
                     $query->where('sender_id', '!=', $user->id)
