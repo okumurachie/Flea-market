@@ -93,7 +93,7 @@ html, body {
     object-fit: cover;
     object-position: center;
     display: block;
-    border: 2px solid #fff;
+    border: 1px solid #D9d9d9;
 }
 .chatpage-title{
     font-size: 36px;
@@ -134,11 +134,87 @@ html, body {
     font-weight: 400;
 }
 
-
-
+.message,
+.own-message {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.message {
+    align-items: flex-start;
+}
+.own-message {
+    align-items: flex-end;
+    text-align: right;
+}
+.message-space,
+.image-space {
+    max-width: 70%;
+    border-radius: 10px;
+}
+.message-space {
+    background: #D9d9d9;
+    padding: 10px;
+}
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.user-icon-image{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border: 1px solid #D9d9d9;
+}
+.user-name{
+    font-size: 20px;
+    font-weight: 700;
+}
+.image-space {
+    width: 150px;
+    border: none;
+}
+.message-image {
+    width: 100%;
+    height: auto;
+    border: 1px solid #D9d9d9;
+    outline: none;
+}
+.form-button-group{
+    padding-right: 20px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}
+.message-edit,
+.chat-delete{
+    border: none;
+    background: none;
+    text-decoration: none;
+    color: #5f5f5f;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.message-edit{
+    padding-top: 0.25px;
+    vertical-align: bottom;
+}
+.chat-delete{
+    padding: 0;
+    padding-top: 0.5px;
+    font-size: 16px;
+}
 
 .chat-input-block{
     width: 100%;
+    font-size: 15px;
     display: flex;
     flex-direction: column;
 }
@@ -164,6 +240,10 @@ html, body {
     padding: 15px;
     text-align: left;
     font-size: 20px;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    resize: none;
+    overflow: hidden
 }
 .image-inpput-wrapper{
     padding: 15px;

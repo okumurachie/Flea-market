@@ -22,13 +22,13 @@
     </div>
 
     <div class="chat-content">
+        @php
+        $buyer = $purchase->user;
+        $seller = $purchase->item->user;
+        $partner = (Auth::id() === $buyer->id) ? $seller : $buyer;
+        @endphp
         <div class="user-info-block">
             <div class="user-info--wrapper">
-                @php
-                $buyer = $purchase->user;
-                $seller = $purchase->item->user;
-                $partner = (Auth::id() === $buyer->id) ? $seller : $buyer;
-                @endphp
                 <div class="user-images">
                     <img
                         src="{{ asset(optional($partner->profile)->image ?? 'images/default.png') }}"
@@ -65,7 +65,7 @@
                     <img
                         src="{{asset(optional($purchase->user->profile)->image ?? 'images/default.png')}}"
                         class="user-icon-image">
-                    <p class="user-name">{{ optional($purchase->user->pofile)->user_name }}</p>
+                    <p class="user-name">{{ optional($partner->profile)->user_name }}</p>
                 </div>
                 <div class="message-space">
                     {!! nl2br(e($message->message)) !!}
@@ -91,7 +91,7 @@
                 </div>
                 @endif
                 <div class="button-group">
-                    <form action="" method="POST">
+                    <form action="" method="POST" class="form-button-group">
                         @csrf
                         @method('DELETE')
                         <a href="" class="message-edit">編集</a>
