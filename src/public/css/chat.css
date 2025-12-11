@@ -152,7 +152,7 @@ html, body {
 .message-space,
 .image-space {
     max-width: 70%;
-    border-radius: 10px;
+    border-radius: 8px;
 }
 .message-space {
     background: #D9d9d9;
@@ -186,6 +186,9 @@ html, body {
     border: 1px solid #D9d9d9;
     outline: none;
 }
+.edit-message{
+    display: flex;
+}
 .form-button-group{
     padding-right: 20px;
     display: flex;
@@ -195,7 +198,7 @@ html, body {
     align-items: center;
 }
 .message-edit,
-.chat-delete{
+.message-delete{
     border: none;
     background: none;
     text-decoration: none;
@@ -206,7 +209,7 @@ html, body {
     padding-top: 0.25px;
     vertical-align: bottom;
 }
-.chat-delete{
+.message-delete{
     padding: 0;
     padding-top: 0.5px;
     font-size: 16px;

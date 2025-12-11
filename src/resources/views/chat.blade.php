@@ -90,63 +90,214 @@
                     <img src="{{ asset($message->chat_image) }}" class="message-image">
                 </div>
                 @endif
-                <div class="button-group">
-                    <form action="" method="POST" class="form-button-group">
-                        @csrf
-                        @method('DELETE')
-                        <a href="" class="message-edit">編集</a>
-                        <button class="chat-delete">削除</button>
-                    </form>
+                <div class="message" data-id="{{ $message->id }}">
+                    <div class="edit-message">
+                        <div class="form-button-group">
+                            <a href="javascript:void(0)" class="message-edit" type="button">編集</a>
+                            <button class="message-delete">削除</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             @endif
             @empty
             <p class="no-message">メッセージはありません</p>
             @endforelse
+
+            <form id="chatForm" action="{{route('chat.store', $purchase->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="chat-input-block">
+                    @if ($errors->any())
+                    <div class="chat-form__error-wrap">
+                        @foreach ($errors->all() as $error)
+                        <p class="chat-form__error-message">{{ $error }}</p>
+                        @endforeach
+                    </div>
+                    @endif
+                    <div class="input-wrapper">
+                        <textarea class="chat-textarea" name="text" id="messageInput" placeholder="取引メッセージを記入してください">{{ old('text')}}</textarea>
+                        <div class="image-inpput-wrapper">
+                            <label for="imageInput" class="chat-file-label">画像を追加</label>
+                            <input type="file" id="imageInput" accept="image/jpeg, image/png" name="image" class="visually-hidden">
+                        </div>
+                        <div class="send-button">
+                            <button>
+                                <img src="{{asset('images/inputbutton.png')}}" alt="送信" class="inputbutton-image">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+        <script>
+            const messageInput = document.getElementById('messageInput');
+            const chatForm = document.getElementById('chatForm');
+            document.getElementById('messageInput').addEventListener('input', function() {
+                sessionStorage.setItem('chat_draft', this.value);
+            });
 
-        <form id="chatForm" action="{{route('chat.store', $purchase->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="chat-input-block">
-                @if ($errors->any())
-                <div class="chat-form__error-wrap">
-                    @foreach ($errors->all() as $error)
-                    <p class="chat-form__error-message">{{ $error }}</p>
-                    @endforeach
-                </div>
-                @endif
-                <div class="input-wrapper">
-                    <textarea class="chat-textarea" name="text" id="messageInput" placeholder="取引メッセージを記入してください">{{ old('text')}}</textarea>
-                    <div class="image-inpput-wrapper">
-                        <label for="imageInput" class="chat-file-label">画像を追加</label>
-                        <input type="file" id="imageInput" accept="image/jpeg, image/png" name="image" class="visually-hidden">
-                    </div>
-                    <div class="send-button">
-                        <button>
-                            <img src="{{asset('images/inputbutton.png')}}" alt="送信" class="inputbutton-image">
-                        </button>
-                    </div>
-                </div>
+            window.addEventListener('load', function() {
+                const draft = sessionStorage.getItem('chat_draft');
+                if (draft && !document.getElementById('messageInput').value) {
+                    document.getElementById('messageInput').value = draft;
+                }
+            });
+
+            document.getElementById('chatForm').addEventListener('submit', function() {
+                sessionStorage.removeItem('chat_draft');
+            });
+
+            document.addEventListener('click', async function(e) {
+                // 1. メッセージ削除
+                if (e.target.classList.contains('message-delete')) {
+                    const ownMessageDiv = e.target.closest('.own-message');
+                    const messageDiv = ownMessageDiv.querySelector('.message');
+
+                    if (!messageDiv || !messageDiv.dataset.id) {
+                        console.error('メッセージIDが見つかりません');
+                        return;
+                    }
+
+                    const id = messageDiv.dataset.id;
+
+                    if (!confirm('このメッセージを削除しますか?')) return;
+
+                    try {
+                        const res = await fetch(`/messages/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        if (res.ok) {
+                            ownMessageDiv.remove();
+                        } else {
+                            const errorData = await res.json();
+                            console.error('削除エラー:', errorData);
+                            alert('削除に失敗しました: ' + (errorData.message || '不明なエラー'));
+                        }
+                    } catch (error) {
+                        alert('エラーが発生しました');
+                    }
+                }
+
+                // 2. メッセージ編集開始
+                if (e.target.classList.contains('message-edit')) {
+                    const ownMessageDiv = e.target.closest('.own-message');
+
+                    if (!ownMessageDiv) {
+                        console.error('own-message要素が見つかりません');
+                        return;
+                    }
+
+                    const messageSpace = ownMessageDiv.querySelector('.message-space.own');
+                    const originalHTML = messageSpace.innerHTML;
+                    const original = messageSpace.textContent.trim();
+
+                    // すでに入力中なら何もしない
+                    if (ownMessageDiv.querySelector('.edit-input')) return;
+
+                    // inputに置き換える
+                    messageSpace.innerHTML = `
+            <textarea class="edit-input" rows="3">${original}</textarea>
+            <div class="edit-buttons">
+                <button class="edit-save">保存</button>
+                <button class="edit-cancel">キャンセル</button>
             </div>
-        </form>
+        `;
+
+                    // 元のHTMLを保存しておく
+                    messageSpace.dataset.originalHtml = originalHTML;
+                }
+
+                // 3. 編集キャンセル
+                if (e.target.classList.contains('edit-cancel')) {
+                    const ownMessageDiv = e.target.closest('.own-message');
+                    const messageSpace = ownMessageDiv.querySelector('.message-space.own');
+                    const originalHtml = messageSpace.dataset.originalHtml;
+
+                    // 元のHTMLに戻す
+                    messageSpace.innerHTML = originalHtml;
+                    delete messageSpace.dataset.originalHtml;
+                }
+
+                // 4. 編集保存
+                if (e.target.classList.contains('edit-save')) {
+                    console.log('保存ボタンがクリックされました');
+
+                    const ownMessageDiv = e.target.closest('.own-message');
+                    console.log('ownMessageDiv:', ownMessageDiv);
+
+                    if (!ownMessageDiv) {
+                        console.error('own-message要素が見つかりません');
+                        alert('エラー: メッセージ要素が見つかりません');
+                        return;
+                    }
+
+                    const messageDiv = ownMessageDiv.querySelector('.message');
+                    console.log('messageDiv:', messageDiv);
+
+                    if (!messageDiv || !messageDiv.dataset.id) {
+                        console.error('メッセージIDが見つかりません');
+                        alert('エラー: メッセージIDが見つかりません');
+                        return;
+                    }
+
+                    const id = messageDiv.dataset.id;
+                    console.log('メッセージID:', id);
+
+                    const input = ownMessageDiv.querySelector('.edit-input');
+                    console.log('input:', input);
+
+                    const messageSpace = ownMessageDiv.querySelector('.message-space.own');
+                    console.log('messageSpace:', messageSpace);
+
+                    if (!input) {
+                        console.error('入力欄が見つかりません');
+                        alert('エラー: 入力欄が見つかりません');
+                        return;
+                    }
+
+                    const newText = input.value.trim();
+                    console.log('新しいテキスト:', newText);
+
+                    if (!newText) {
+                        alert('メッセージを入力してください');
+                        return;
+                    }
+
+                    try {
+                        console.log('リクエスト送信中...');
+                        const res = await fetch(`/messages/${id}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                body: newText
+                            })
+                        });
+
+                        console.log('レスポンスステータス:', res.status);
+
+                        if (res.ok) {
+                            console.log('保存成功');
+                            // 改行を<br>に変換して表示
+                            messageSpace.innerHTML = newText.replace(/\n/g, '<br>');
+                            delete messageSpace.dataset.originalHtml;
+                        } else {
+                            const errorData = await res.json();
+                            console.error('保存エラー:', errorData);
+                            alert('保存に失敗しました: ' + (errorData.message || '不明なエラー'));
+                        }
+                    } catch (error) {
+                        console.error('例外エラー:', error);
+                        alert('エラーが発生しました: ' + error.message);
+                    }
+                }
+            });
+        </script>
     </div>
-    <script>
-        const messageInput = document.getElementById('messageInput');
-        const chatForm = document.getElementById('chatForm');
-        document.getElementById('messageInput').addEventListener('input', function() {
-            sessionStorage.setItem('chat_draft', this.value);
-        });
-
-        window.addEventListener('load', function() {
-            const draft = sessionStorage.getItem('chat_draft');
-            if (draft && !document.getElementById('messageInput').value) {
-                document.getElementById('messageInput').value = draft;
-            }
-        });
-
-        document.getElementById('chatForm').addEventListener('submit', function() {
-            sessionStorage.removeItem('chat_draft');
-        });
-    </script>
-</div>
-@endsection
+    @endsection

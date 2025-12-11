@@ -8,6 +8,7 @@ use App\Models\TransactionMessage;
 use Illuminate\Http\Request;
 use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
@@ -55,5 +56,44 @@ class ChatController extends Controller
         $purchase->update(['last_message_at' => now()]);
 
         return redirect()->route('chat.show', $purchase->id);
+    }
+
+    public function update(Request $request, TransactionMessage $message)
+    {
+        try {
+            $this->authorize('update', $message);
+
+            $validated = $request->validate([
+                'body' => 'required|max:400',
+            ]);
+
+            $newMessageText = $validated['body'];
+            $message->update(['message' => $newMessageText]);
+
+            return response()->json(['status' => 'ok']);
+        } catch (\Exception $e) {
+            Log::error('Message update error: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy(TransactionMessage $message)
+    {
+        try {
+            $this->authorize('delete', $message);
+
+            $message->delete();
+
+            return response()->json(['status' => 'ok']);
+        } catch (\Exception $e) {
+            Log::error('Message delete error: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

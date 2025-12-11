@@ -57,4 +57,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/konbini/confirm', [PurchaseController::class, 'showKonbiniConfirm'])->name('konbini.confirm');
     Route::get('/chat/{purchase}', [ChatController::class, 'show'])->name('chat.show');
     Route::post('/chat/{purchase}/message', [ChatController::class, 'store'])->name('chat.store');
+    Route::patch('/messages/{message}', [ChatController::class, 'update'])->name('message.update');
+    Route::delete('/messages/{message}', [ChatController::class, 'destroy'])->name('message.destroy');
 });
