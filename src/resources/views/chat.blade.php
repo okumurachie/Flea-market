@@ -105,7 +105,7 @@
             @endforelse
         </div>
 
-        <form action="{{route('chat.store', $purchase->id) }}" method="POST" enctype="multipart/form-data">
+        <form id="chatForm" action="{{route('chat.store', $purchase->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="chat-input-block">
                 @if ($errors->any())
@@ -116,7 +116,7 @@
                 </div>
                 @endif
                 <div class="input-wrapper">
-                    <textarea class="chat-textarea" name="text" id="messageInput" placeholder="取引メッセージを記入してください">{{ old('text') }}</textarea>
+                    <textarea class="chat-textarea" name="text" id="messageInput" placeholder="取引メッセージを記入してください">{{ old('text')}}</textarea>
                     <div class="image-inpput-wrapper">
                         <label for="imageInput" class="chat-file-label">画像を追加</label>
                         <input type="file" id="imageInput" accept="image/jpeg, image/png" name="image" class="visually-hidden">
@@ -130,6 +130,23 @@
             </div>
         </form>
     </div>
-</div>
+    <script>
+        const messageInput = document.getElementById('messageInput');
+        const chatForm = document.getElementById('chatForm');
+        document.getElementById('messageInput').addEventListener('input', function() {
+            sessionStorage.setItem('chat_draft', this.value);
+        });
+
+        window.addEventListener('load', function() {
+            const draft = sessionStorage.getItem('chat_draft');
+            if (draft && !document.getElementById('messageInput').value) {
+                document.getElementById('messageInput').value = draft;
+            }
+        });
+
+        document.getElementById('chatForm').addEventListener('submit', function() {
+            sessionStorage.removeItem('chat_draft');
+        });
+    </script>
 </div>
 @endsection

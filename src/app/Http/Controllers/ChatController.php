@@ -54,8 +54,6 @@ class ChatController extends Controller
 
         $purchase->update(['last_message_at' => now()]);
 
-        return redirect()->route('chat.show', $purchase->id)
-            ->with('message', 'メッセージを送信しました')
-            ->withInput();
+        return redirect()->route('chat.show', $purchase->id);
     }
 }
