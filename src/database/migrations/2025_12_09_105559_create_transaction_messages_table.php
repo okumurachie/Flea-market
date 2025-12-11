@@ -24,7 +24,6 @@ return new class extends Migration
             $table->index(['purchase_id', 'is_read']);
             $table->index(['purchase_id', 'message_type']);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

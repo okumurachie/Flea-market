@@ -30,7 +30,9 @@ class ChatMessageReauest extends FormRequest
             'image' => [
                 'nullable',
                 'file',
-                'mimes:jpeg,png',
+                'mimes:jpeg,png,jpg,gif',
+                'max:2048',
+                'image',
             ],
         ];
     }

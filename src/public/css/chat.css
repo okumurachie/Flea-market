@@ -12,6 +12,7 @@ html, body {
 
 .main{
     width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: row;
     overflow: hidden;
@@ -133,7 +134,9 @@ html, body {
     font-size: 36px;
     font-weight: 400;
 }
-
+.message-display{
+    min-height: 400px;
+}
 .message,
 .own-message {
     width: 100%;
@@ -185,6 +188,10 @@ html, body {
     height: auto;
     border: 1px solid #D9d9d9;
     outline: none;
+}
+.message-actions {
+    display: flex;
+    justify-content: flex-end;
 }
 .edit-message{
     display: flex;

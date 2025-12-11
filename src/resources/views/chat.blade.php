@@ -58,52 +58,53 @@
         </div>
 
         <div class="chat-block" id="chatBlock">
-            @forelse($messages as $message)
-            @if($message->sender_id !== Auth::id())
-            <div class="message">
-                <div class="message-header">
-                    <img
-                        src="{{asset(optional($purchase->user->profile)->image ?? 'images/default.png')}}"
-                        class="user-icon-image">
-                    <p class="user-name">{{ optional($partner->profile)->user_name }}</p>
+            <div class="message-display">
+                @forelse($messages as $message)
+                @if($message->sender_id !== Auth::id())
+                <div class="message">
+                    <div class="message-header">
+                        <img
+                            src="{{asset(optional($purchase->user->profile)->image ?? 'images/default.png')}}"
+                            class="user-icon-image">
+                        <p class="user-name">{{ optional($partner->profile)->user_name }}</p>
+                    </div>
+                    <div class="message-space">
+                        {!! nl2br(e($message->message)) !!}
+                    </div>
+                    @if($message->chat_image)
+                    <div class="image-space">
+                        <img src="{{ asset($message->chat_image) }}" class="message-image">
+                    </div>
+                    @endif
                 </div>
-                <div class="message-space">
-                    {!! nl2br(e($message->message)) !!}
-                </div>
-                @if($message->chat_image)
-                <div class="image-space">
-                    <img src="{{ asset($message->chat_image) }}" class="message-image">
-                </div>
-                @endif
-            </div>
-            @else
-            <div class="own-message">
-                <div class="message-header">
-                    <p class="user-name">{{ Auth::user()->profile->user_name}}</p>
-                    <img id="preview" src="{{ asset(Auth::user()->profile->image ?? 'images/default.png') }}" class="user-icon-image">
-                </div>
-                <div class="message-space own">
-                    {!! nl2br(e($message->message)) !!}
-                </div>
-                @if($message->chat_image)
-                <div class="image-space own">
-                    <img src="{{ asset($message->chat_image) }}" class="message-image">
-                </div>
-                @endif
-                <div class="message" data-id="{{ $message->id }}">
-                    <div class="edit-message">
-                        <div class="form-button-group">
-                            <a href="javascript:void(0)" class="message-edit" type="button">編集</a>
-                            <button class="message-delete">削除</button>
+                @else
+                <div class="own-message">
+                    <div class="message-header">
+                        <p class="user-name">{{ Auth::user()->profile->user_name}}</p>
+                        <img id="preview" src="{{ asset(Auth::user()->profile->image ?? 'images/default.png') }}" class="user-icon-image">
+                    </div>
+                    <div class="message-space own">
+                        {!! nl2br(e($message->message)) !!}
+                    </div>
+                    @if($message->chat_image)
+                    <div class="image-space own">
+                        <img src="{{ asset($message->chat_image) }}" class="message-image">
+                    </div>
+                    @endif
+                    <div class="message-actions" data-id="{{ $message->id }}">
+                        <div class="edit-message">
+                            <div class="form-button-group">
+                                <a href="javascript:void(0)" class="message-edit" type="button">編集</a>
+                                <button class="message-delete">削除</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                @endif
+                @empty
+                <p class="no-message">メッセージはありません</p>
+                @endforelse
             </div>
-            @endif
-            @empty
-            <p class="no-message">メッセージはありません</p>
-            @endforelse
-
             <form id="chatForm" action="{{route('chat.store', $purchase->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="chat-input-block">
@@ -151,7 +152,7 @@
                 // 1. メッセージ削除
                 if (e.target.classList.contains('message-delete')) {
                     const ownMessageDiv = e.target.closest('.own-message');
-                    const messageDiv = ownMessageDiv.querySelector('.message');
+                    const messageDiv = ownMessageDiv.querySelector('.message-actions');
 
                     if (!messageDiv || !messageDiv.dataset.id) {
                         console.error('メッセージIDが見つかりません');
@@ -235,7 +236,7 @@
                         return;
                     }
 
-                    const messageDiv = ownMessageDiv.querySelector('.message');
+                    const messageDiv = ownMessageDiv.querySelector('.message-actions');
                     console.log('messageDiv:', messageDiv);
 
                     if (!messageDiv || !messageDiv.dataset.id) {
