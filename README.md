@@ -40,9 +40,17 @@
 ## ユーザーのログイン情報
 シーディングで、デフォルトのユーザーを作成
 
-- name:Test User
-- email:test@example.com
+- name:Test User1
+- email:test1@example.com
 - password:abcd1234
+
+- name:Test User2
+- email:test2@example.com
+- password:abcd1234
+
+- name:Test User3
+- email:test@example.com
+- password:abcd4321
 
 ---
 ## 購入データの保存（コンビニ支払いの場合）
@@ -81,5 +89,6 @@ payment_intent.succeededイベントを手動でトリガーし、/webhook/strip
 
 - 商品一覧画面（トップ画面）：http://localhost/
 - 会員登録：http://localhost/register
+- メール確認画面（取引完了通知メール）：http://localhost:8025
 - phpMyAdmin:http://localhost:8080/
 # Flea-market

@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Exception;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TransactionCompletedMail;
 
 class ChatController extends Controller
 {
@@ -140,6 +143,14 @@ class ChatController extends Controller
             } else {
                 // 購入者が評価した場合、buyer_completed
                 $purchase->transaction_status = 'buyer_completed';
+
+                $seller = $purchase->item->user;
+
+                try {
+                    Mail::to($seller->email)->send(new TransactionCompletedMail($purchase));
+                } catch (\Exception $mailError) {
+                    Log::error('Mail sending error:' .  $mailError->getMessage());
+                }
             }
             $purchase->save();
 
