@@ -130,7 +130,7 @@
 </div>
 <div class="modal-overlay" id="ratingModal" style="display: none;">
     <div class="modal-content">
-            <h2 class="modal-title">取引が完了しました。</h2>
+        <h2 class="modal-title">取引が完了しました。</h2>
         <div class="rating-block">
             <p class="modal-text">今回の取引相手はどうでしたか？</p>
             <div class="star-rating" id="starRating">
@@ -165,11 +165,23 @@
     });
 
     document.addEventListener('click', async function(e) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+
         if (e.target.classList.contains('message-delete')) {
             const ownMessageDiv = e.target.closest('.own-message');
             const messageDiv = ownMessageDiv.querySelector('.message-actions');
 
-            if (!messageDiv?.dataset.id) return;
+            console.log('ownMessageDiv:', ownMessageDiv);
+            console.log('messageDiv:', messageDiv);
+            console.log('dataset.id:', messageDiv?.dataset.id);
+
+            if (!messageDiv?.dataset.id) {
+                console.error('IDが取得できません');
+                return;
+            }
+
+
+            // if (!messageDiv?.dataset.id) return;
 
             const id = messageDiv.dataset.id;
 
@@ -227,8 +239,12 @@
             const input = ownMessageDiv.querySelector('.edit-input');
             const messageSpace = ownMessageDiv.querySelector('.message-space.own');
 
+            console.log('edit-save - messageDiv:', messageDiv);
+            console.log('edit-save - dataset.id:', messageDiv?.dataset.id);
+
             if (!messageDiv?.dataset.id || !input || !messageSpace) return;
 
+            const id = messageDiv.dataset.id;
             const newText = input.value.trim();
 
             if (!newText) {
@@ -269,7 +285,7 @@
     console.log('評価スクリプト読み込み完了');
 
     // ページ読み込み時、出品者で購入者が評価済みの場合はモーダルを表示
-    @if($isSeller && $purchase->transaction_status === 'buyer_completed')
+    @if($isSeller && $purchase -> transaction_status === 'buyer_completed')
     ratingModal.style.display = 'flex';
     @endif
 
@@ -279,8 +295,8 @@
         completeTransactionBtn.addEventListener('click', function(e) {
             e.preventDefault();
             ratingModal.style.display = 'flex';
-    });
-}
+        });
+    }
 
 
     // 星評価のホバーとクリック処理
@@ -321,6 +337,7 @@
 
         const isSeller = {{ $isSeller ? 'true' : 'false' }};
         const purchaseId = {{ $purchase->id }};
+
 
         try {
             const response = await fetch(`/chat/${purchaseId}/complete`, {
