@@ -59,4 +59,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/chat/{purchase}/message', [ChatController::class, 'store'])->name('chat.store');
     Route::patch('/messages/{message}', [ChatController::class, 'update'])->name('message.update');
     Route::delete('/messages/{message}', [ChatController::class, 'destroy'])->name('message.destroy');
+    Route::post('/chat/{purchase}/complete', [ChatController::class, 'complete'])->name('chat.complete');
 });

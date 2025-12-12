@@ -65,6 +65,7 @@ html, body {
     border-radius: 5px;
     padding: 0 20px;
     box-sizing: border-box;
+    white-space: nowrap;
 }
 
 .chat-content{
@@ -277,6 +278,101 @@ html, body {
     height: 59px;
     cursor: pointer;
 }
+
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fdfce6;
+    border-radius: 12px;
+    border: 1px solid #000000;
+    padding: 15px 0;
+    max-width: 600px;
+    max-height: 460px;
+    width: 90%;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.modal-title {
+    font-size: 35px;
+    font-weight: 400;
+    padding-left: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: #000000;
+    border-bottom: 1px solid #000000;
+}
+
+.modal-text {
+    color: #868686;
+    font-size: 20px;
+    padding-left: 20px;
+
+}
+
+.star-rating {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.star {
+    font-size: 100px;
+    cursor: pointer;
+    transition: color 0.2s;
+    color: #ddd;
+    user-select: none;
+}
+.star.active{
+    color: #ffd700;
+} */
+/* .star::before {
+    content: '★';
+    color: #ddd;
+    pointer-events: none;
+}
+.star.active ::before{
+    color: #ffd700;
+} */
+.rating-block{
+    border-bottom: 1px solid #000000;
+}
+.rating-button{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 15px;
+}
+.submit-rating-btn {
+    margin-top: 12px;
+    width: 130px;
+    padding: 15px;
+    background-color: #ff8282;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 24px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-rating-btn:hover {
+    background-color: #2779bd;
+}
+
+
 
 
 

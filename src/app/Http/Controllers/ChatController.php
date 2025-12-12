@@ -6,8 +6,8 @@ use App\Http\Requests\ChatMessageReauest;
 use App\Models\Purchase;
 use App\Models\TransactionMessage;
 use Illuminate\Http\Request;
-use App\Http\Requests\ChatMessageRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
@@ -23,7 +23,11 @@ class ChatController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        $messages = $purchase->messages()->orderBy('created_at', 'asc')->get();
+        $messages = $purchase->messages()
+            ->where('message_type', '!=', TransactionMessage::TYPE_REVIEW)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
         $transactions = Purchase::where('user_id', AUth::id())
             ->orWhereHas('item', fn($query) => $query->where('user_id', Auth::id()))
             ->orderByDesc('last_message_at')
@@ -72,7 +76,6 @@ class ChatController extends Controller
 
             return response()->json(['status' => 'ok']);
         } catch (\Exception $e) {
-            Log::error('Message update error: ' . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -89,11 +92,67 @@ class ChatController extends Controller
 
             return response()->json(['status' => 'ok']);
         } catch (\Exception $e) {
-            Log::error('Message delete error: ' . $e->getMessage());
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function complete(Request $request, Purchase $purchase)
+    {
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'is_seller' => 'required|boolean'
+        ]);
+
+        $currentUserId = auth()->id();
+
+        // 権限チェック
+        if ($validated['is_seller']) {
+            // 出品者の場合
+            if ($purchase->item->user_id !== $currentUserId) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+        } else {
+            // 購入者の場合
+            if ($purchase->user_id !== $currentUserId) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+        }
+
+        DB::beginTransaction();
+        try {
+            // 評価を保存
+            TransactionMessage::create([
+                'purchase_id' => $purchase->id,
+                'sender_id' => $currentUserId,
+                'message_type' => TransactionMessage::TYPE_REVIEW,
+                'message' => '',
+                'rating' => $validated['rating'],
+                'is_read' => false,
+            ]);
+
+            // transaction_statusを更新
+            if ($validated['is_seller']) {
+                // 出品者が評価した場合、取引完了
+                $purchase->transaction_status = 'completed';
+            } else {
+                // 購入者が評価した場合、buyer_completed
+                $purchase->transaction_status = 'buyer_completed';
+            }
+            $purchase->save();
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Rating submitted successfully',
+                'status' => $purchase->transaction_status
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Rating submission error: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to submit rating'], 500);
         }
     }
 }
