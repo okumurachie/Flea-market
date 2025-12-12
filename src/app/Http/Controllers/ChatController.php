@@ -111,14 +111,11 @@ class ChatController extends Controller
 
         $currentUserId = auth()->id();
 
-        // 権限チェック
         if ($validated['is_seller']) {
-            // 出品者の場合
             if ($purchase->item->user_id !== $currentUserId) {
                 return response()->json(['error' => 'Unauthorized'], 403);
             }
         } else {
-            // 購入者の場合
             if ($purchase->user_id !== $currentUserId) {
                 return response()->json(['error' => 'Unauthorized'], 403);
             }
@@ -126,7 +123,6 @@ class ChatController extends Controller
 
         DB::beginTransaction();
         try {
-            // 評価を保存
             TransactionMessage::create([
                 'purchase_id' => $purchase->id,
                 'sender_id' => $currentUserId,
@@ -136,12 +132,9 @@ class ChatController extends Controller
                 'is_read' => false,
             ]);
 
-            // transaction_statusを更新
             if ($validated['is_seller']) {
-                // 出品者が評価した場合、取引完了
                 $purchase->transaction_status = 'completed';
             } else {
-                // 購入者が評価した場合、buyer_completed
                 $purchase->transaction_status = 'buyer_completed';
 
                 $seller = $purchase->item->user;
