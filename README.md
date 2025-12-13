@@ -44,17 +44,20 @@
 
 シーディングで、デフォルトのユーザーを作成
 
-- name:Test User1
+### name:Test User1
+
 - email:test1@example.com
 - password:abcd1234
-  (商品 ID CO01〜CO05 を出品)
+- (商品 ID CO01〜CO05 を出品)
 
-- name:Test User2
+### name:Test User2
+
 - email:test2@example.com
 - password:abcd1234
-  (商品 ID CO06〜CO10 を出品)
+- (商品 ID CO06〜CO10 を出品)
 
-- name:Test User3
+### name:Test User3
+
 - email:test@example.com
 - password:abcd4321
 

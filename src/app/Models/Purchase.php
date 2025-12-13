@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Stripe\FinancialConnections\Transaction;
 
 class Purchase extends Model
 {
@@ -85,9 +84,6 @@ class Purchase extends Model
             ->exists();
     }
 
-    /**
-     * 相手が評価済みかどうか
-     */
     public function hasPartnerReviewed()
     {
         $partnerId = $this->isBuyer() ? $this->item->user_id : $this->user_id;
@@ -96,46 +92,31 @@ class Purchase extends Model
             ->exists();
     }
 
-    /**
-     * 取引が進行中かどうか
-     */
     public function isInProgress()
     {
         return $this->transaction_status === self::STATUS_IN_PROGRESS;
     }
 
-    /**
-     * 購入者が完了済みかどうか
-     */
     public function isBuyerCompleted()
     {
         return $this->transaction_status === self::STATUS_BUYER_COMPLETED;
     }
 
-    /**
-     * 取引が完全に完了しているかどうか
-     */
     public function isCompleted()
     {
         return $this->transaction_status === self::STATUS_COMPLETED;
     }
 
-    /**
-     * 現在のユーザーが評価可能かどうか
-     */
     public function canUserReview()
     {
-        // すでに評価済みなら不可
         if ($this->hasUserReviewed()) {
             return false;
         }
 
-        // 購入者の場合：いつでも評価可能
         if ($this->isBuyer()) {
             return true;
         }
 
-        // 出品者の場合：購入者が完了した後のみ評価可能
         if ($this->isSeller()) {
             return $this->isBuyerCompleted() || $this->isCompleted();
         }
