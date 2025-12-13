@@ -1,16 +1,17 @@
-# coachtechフリマ （FleaMarket）
+# coachtech フリマ （FleaMarket）
 
 ## 環境構築
 
 ### Docker ビルド
+
 - 1.git clone git@github.com:okumurachie/Flea-market.git
 - 2.docker-compose up -d --build
 
 ### laravel 環境構築
+
 - 1.docker-compose exec php bash
 - 2.composer install
 - 3.cp .env.example .env(.env.example ファイルから.env を作成し、環境変数を変更)
-
 
         DB_HOST=mysql
         DB_DATABASE=laravel_db
@@ -31,54 +32,66 @@
 - 6.php artisan db:seed
 
 ## 使用技術（実行環境）
+
 - PHP 8.4.8
 - Laravel 10.48.29
 - MySQL 8.0
 - nginx 1.21.1
 
 ---
+
 ## ユーザーのログイン情報
+
 シーディングで、デフォルトのユーザーを作成
 
 - name:Test User1
 - email:test1@example.com
 - password:abcd1234
+  (商品 ID CO01〜CO05 を出品)
 
 - name:Test User2
 - email:test2@example.com
 - password:abcd1234
+  (商品 ID CO06〜CO10 を出品)
 
 - name:Test User3
 - email:test@example.com
 - password:abcd4321
 
 ---
+
 ## 購入データの保存（コンビニ支払いの場合）
-コンビニ支払いはカード決済と異なり、即時に支払いが確定しないため、StripeのWebhookを使用し、支払い完了後に購入データを保存する仕組みを構築しました。StripeWebhookController を作成し、payment_intent.succeeded イベント受信時に購入データを保存する処理を実装しました。
+
+コンビニ支払いはカード決済と異なり、即時に支払いが確定しないため、Stripe の Webhook を使用し、支払い完了後に購入データを保存する仕組みを構築しました。StripeWebhookController を作成し、payment_intent.succeeded イベント受信時に購入データを保存する処理を実装しました。
 
 ### テスト用イベント送信
 
 Stripe CLI のインストール
+
 ```bash
         brew install stripe/stripe-cli/stripe
 ```
 
 Stripe CLI にログイン
+
 ```bash
         stripe login --interactive
 ```
 
-Stripeのイベントをローカルサーバーへ転送します
+Stripe のイベントをローカルサーバーへ転送します
+
 ```bash
         stripe listen --forward-to http://localhost/webhook/stripe
 ```
 
-payment_intent.succeededイベントを手動でトリガーし、/webhook/stripeに送信します。
+payment_intent.succeeded イベントを手動でトリガーし、/webhook/stripe に送信します。
+
 ```bash
         stripe trigger payment_intent.succeeded \
         --add payment_intent:metadata.item_id=4 \    購入する商品のID
         --add payment_intent:metadata.user_id=6      購入者ID
 ```
+
 ※ item_id と user_id は実際の購入処理からは自動で入らないため、手動で指定します。
 
 ## ER 図
@@ -91,4 +104,5 @@ payment_intent.succeededイベントを手動でトリガーし、/webhook/strip
 - 会員登録：http://localhost/register
 - メール確認画面（取引完了通知メール）：http://localhost:8025
 - phpMyAdmin:http://localhost:8080/
+
 # Flea-market
