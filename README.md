@@ -1,4 +1,4 @@
-# coachtech フリマ （FleaMarket）
+# coachtech フリマ （Flea-market）
 
 ## 環境構築
 
@@ -53,7 +53,7 @@
 ### name:Test User2
 
 - email:test2@example.com
-- password:abcd1234
+- password:abcd5678
 - (商品 ID CO06〜CO10 を出品)
 
 ### name:Test User3
