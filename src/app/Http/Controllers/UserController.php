@@ -53,25 +53,30 @@ class UserController extends Controller
         $averageRating = $user->average_rating;
         $reviewCount = $user->review_count;
 
-        $totalUnreadCount = Purchase::where(function ($query) use ($user) {
+        $unreadMessagesCount = Purchase::where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
                 ->orWhereHas('item', function ($subquery) use ($user) {
                     $subquery->where('user_id', $user->id);
                 });
         })
-            ->where(function ($query) use ($user) {
-                $query->whereHas('messages', function ($msgQuery) use ($user) {
-                    $msgQuery->where('sender_id', '!=', $user->id)
+            ->withCount([
+                'messages as unread_count' => function ($query) use ($user) {
+                    $query->where('sender_id', '!=', $user->id)
                         ->where('is_read', false);
-                })
-                    ->orWhere(function ($subQuery) use ($user) {
-                        $subQuery->whereHas('item', function ($itemQuery) use ($user) {
-                            $itemQuery->where('user_id', $user->id);
-                        })
-                            ->where('transaction_status', 'buyer_completed');
-                    });
-            })
+                }
+            ])
+            ->get()
+            ->sum('unread_count');
+
+        $pendingRatingsCount = Purchase::where(function ($query) use ($user) {
+            $query->whereHas('item', function ($itemQuery) use ($user) {
+                $itemQuery->where('user_id', $user->id);
+            });
+        })
+            ->where('transaction_status', 'buyer_completed')
             ->count();
+
+        $totalUnreadCount = $unreadMessagesCount + $pendingRatingsCount;
 
         $items = collect();
         $purchases = collect();

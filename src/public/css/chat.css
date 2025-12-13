@@ -233,8 +233,6 @@ html, body {
     display: flex;
     flex-direction: column;
 }
-
-
 .chat-form__error-message {
     color: red;
     padding: 6px 10px;
@@ -283,7 +281,6 @@ html, body {
     cursor: pointer;
 }
 
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -295,7 +292,6 @@ html, body {
     justify-content: center;
     align-items: center;
 }
-
 .modal-content {
     background: #fdfce6;
     border-radius: 12px;
@@ -316,21 +312,18 @@ html, body {
     color: #000000;
     border-bottom: 1px solid #000000;
 }
-
 .modal-text {
     color: #868686;
     font-size: 20px;
     padding-left: 20px;
 
 }
-
 .star-rating {
     padding: 20px;
     display: flex;
     justify-content: center;
     gap: 10px;
 }
-
 .star {
     font-size: 100px;
     cursor: pointer;
@@ -340,15 +333,7 @@ html, body {
 }
 .star.active{
     color: #ffd700;
-} */
-/* .star::before {
-    content: '★';
-    color: #ddd;
-    pointer-events: none;
 }
-.star.active ::before{
-    color: #ffd700;
-} */
 .rating-block{
     border-bottom: 1px solid #000000;
 }
@@ -371,111 +356,88 @@ html, body {
     cursor: pointer;
     transition: background-color 0.2s;
 }
-
 .submit-rating-btn:hover {
     background-color: #2779bd;
 }
 
 
-
-
-
-/* PC: 1400-1540px（最適化） */
 @media (min-width: 1400px) and (max-width: 1540px) {
     .sidebar {
-        width: 20%;           /* 280-308pxで安定 */
+        width: 20%;
         max-width: 300px;
         min-width: 280px;
     }
-
     .transactions__links {
-        width: 85%;           /* 238-255pxで安定 */
+        width: 85%;
         max-width: 255px;
         gap: 40px;
     }
-
     .transaction-items {
         font-size: 24px;
-        height: 48px;         /* PC用高さ */
+        height: 48px;
         padding: 0 24px;
     }
 }
 
-/* PC-タブレット中間: 850-1399px */
 @media (min-width: 850px) and (max-width: 1399px) {
     .sidebar {
         width: 22%;
         max-width: 280px;
         min-width: 200px;
     }
-
     .transactions__links {
         width: 85%;
         max-width: 200px;
         gap: 35px;
     }
-
     .transaction-items {
         font-size: 20px;
         height: 44px;
         padding: 0 18px;
     }
-
     .chat-content {
         padding: 0 20px;
     }
-
     .user-icon {
         width: 70px;
         height: 70px;
     }
-
     .chatpage-title {
         font-size: 28px;
     }
-
     .complete-button {
         width: 160px;
         height: 48px;
         font-size: 18px;
     }
-
     .item_img img {
         width: 160px;
         height: 160px;
     }
-
     .item-of-name {
         font-size: 36px;
     }
-
     .item-of-price {
         font-size: 28px;
     }
-
     .message-space {
         font-size: 14px;
     }
-
     .user-icon-image {
         width: 55px;
         height: 55px;
     }
-
     .user-name {
         font-size: 18px;
     }
-
     .chat-textarea {
         font-size: 17px;
         height: 46px;
     }
-
     .chat-file-label {
         font-size: 17px;
         padding: 8px 12px;
     }
-
     .inputbutton-image {
         width: 68px;
     }
@@ -490,7 +452,6 @@ html, body {
         font-size: 16px;
         height: 44px;
     }
-
     .chat-file-label {
         font-size: 20px;
     }
@@ -503,22 +464,19 @@ html, body {
     }
 }
 
-/* タブレット: 768-850px（要件定義必須） */
 @media (min-width: 768px) and (max-width: 850px) {
     .sidebar {
-        width: 25%;           /* 192-212pxで安定 */
+        width: 25%;
         max-width: 220px;
         min-width: 190px;
     }
-
     .transactions__links {
-        width: 90%;           /* 171-198pxで安定 */
+        width: 90%;
         max-width: 190px;
-        gap: 30px;            /* 少し縮小 */
+        gap: 30px;
     }
-
     .transaction-items {
-        font-size: 20px;      /* 少し小さく */
+        font-size: 20px;
         height: 42px;
         padding: 0 16px;
     }
@@ -526,77 +484,61 @@ html, body {
         padding: 0 15px;
         gap: 15px;
     }
-
     .user-info-block {
         flex-direction: column;
         align-items: flex-start;
     }
-
     .user-icon {
         width: 65px;
         height: 65px;
     }
-
     .chatpage-title {
         font-size: 26px;
     }
-
     .complete-button {
         width: 150px;
         height: 45px;
         font-size: 17px;
         align-self: flex-end;
     }
-
     .item-info-block {
         gap: 20px;
     }
-
     .item_img img {
         width: 140px;
         height: 140px;
     }
-
     .item-of-name {
         font-size: 32px;
     }
-
     .item-of-price {
         font-size: 26px;
     }
-
     .message-display {
         min-height: 250px;
     }
-
     .message-space {
         max-width: 75%;
         font-size: 14px;
     }
-
     .user-icon-image {
         width: 52px;
         height: 52px;
     }
-
     .user-name {
         font-size: 17px;
     }
-
     .image-space {
         width: 130px;
     }
-
     .input-wrapper {
         gap: 5px;
     }
-
     .chat-textarea {
         width: 300px;
         font-size: 16px;
         height: 44px;
     }
-
     .chat-file-label {
         font-size: 16px;
     }
@@ -607,22 +549,18 @@ html, body {
         width: 40px;
         height: 35px;
     }
-
     .modal-content {
         max-width: 500px;
     }
-
     .star {
         font-size: 70px;
     }
 }
 
-    /* スマホ以下 */
 @media (max-width: 767px) {
     .main {
         flex-direction: column;
     }
-
     .sidebar {
         width: 100%;
         max-width: none;
@@ -630,78 +568,62 @@ html, body {
         position: relative;
         height: auto;
     }
-
     .chat-content {
         width: 100%;
         padding: 0 15px;
     }
-
     .user-info-block {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-
     .user-info--wrapper {
         gap: 15px;
     }
-
     .user-icon {
         width: 60px;
         height: 60px;
     }
-
     .chatpage-title {
         font-size: 22px;
     }
-
     .complete-button {
         width: 140px;
         height: 42px;
         font-size: 16px;
     }
-
     .item-info-block {
         flex-direction: column;
         gap: 15px;
     }
-
     .item_img img {
         width: 120px;
         height: 120px;
     }
-
     .item-of-name {
         font-size: 26px;
     }
-
     .item-of-price {
         font-size: 22px;
     }
-
     .message-space {
         max-width: 80%;
     }
-
     .input-wrapper {
         flex-wrap: wrap;
         gap: 10px;
     }
-
     .chat-textarea {
         width: 100%;
         height: 60px;
     }
-
     .image-inpput-wrapper {
         flex: 1;
     }
-
     .chat-file-label {
         font-size: 15px;
         padding: 8px 12px;
     }
-
     .star {
         font-size: 50px;
     }

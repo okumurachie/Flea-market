@@ -127,7 +127,6 @@ ul{
     padding-left: 20px;
 }
 
-/* タブレット対応 (768px - 850px) */
 @media (max-width: 850px) {
     .header-logo__group {
         width: 90%;
@@ -175,7 +174,6 @@ ul{
     font-size: 18px;
 }
 }
-/* PC対応 (1400px - 1540px) */
 @media (min-width: 1400px) and (max-width: 1540px) {
     .content {
         max-width: 1540px;

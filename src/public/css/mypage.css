@@ -93,7 +93,7 @@
 .lists a{
     position: relative;
 }
-/* タブの通知バッジ（"取引中の商品"タブの横にしたい */
+
 .tab-notification-badge {
     position: absolute;
     top: 13%;
@@ -220,7 +220,6 @@
     background-color: #eee;
 }
 
-/* タブレット対応 (768px - 850px) */
 @media (max-width: 850px) {
     .profile__box {
         width: 85%;
@@ -301,7 +300,6 @@
 }
 
 
-/* PC対応 (1400px - 1540px) */
 @media (min-width: 1400px) and (max-width: 1540px) {
     .profile__box {
         width: 75%;
@@ -316,7 +314,6 @@
     }
 }
 
-/* 大画面対応 */
 @media (min-width: 1540px) {
     .profile__box {
         width: 70%;
