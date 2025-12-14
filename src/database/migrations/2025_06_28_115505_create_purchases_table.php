@@ -22,6 +22,7 @@ class CreatePurchasesTable extends Migration
             $table->string('destination');
             $table->timestamp('last_message_at')->nullable();
             $table->enum('transaction_status', ['in_progress', 'buyer_completed', 'completed'])->default('in_progress');
+            $table->timestamp('seller_rated_at')->nullable();
             $table->timestamps();
         });
     }

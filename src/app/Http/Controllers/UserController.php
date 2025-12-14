@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\Profile;
+use App\Models\TransactionMessage;
 
 class UserController extends Controller
 {
@@ -53,30 +54,38 @@ class UserController extends Controller
         $averageRating = $user->average_rating;
         $reviewCount = $user->review_count;
 
-        $unreadMessagesCount = Purchase::where(function ($query) use ($user) {
-            $query->where('user_id', $user->id)
-                ->orWhereHas('item', function ($subquery) use ($user) {
-                    $subquery->where('user_id', $user->id);
-                });
+        $sellerUnreadMessages = Purchase::whereHas('item', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
         })
             ->withCount([
                 'messages as unread_count' => function ($query) use ($user) {
                     $query->where('sender_id', '!=', $user->id)
-                        ->where('is_read', false);
+                        ->where('is_read', false)
+                        ->where('message_type', '!=', TransactionMessage::TYPE_REVIEW);
                 }
             ])
             ->get()
             ->sum('unread_count');
 
-        $pendingRatingsCount = Purchase::where(function ($query) use ($user) {
-            $query->whereHas('item', function ($itemQuery) use ($user) {
-                $itemQuery->where('user_id', $user->id);
-            });
+        $buyerUnreadMessages = Purchase::where('user_id', $user->id)
+            ->withCount([
+                'messages as unread_count' => function ($query) use ($user) {
+                    $query->where('sender_id', '!=', $user->id)
+                        ->where('is_read', false)
+                        ->where('message_type', '!=', TransactionMessage::TYPE_REVIEW);
+                }
+            ])
+            ->get()
+            ->sum('unread_count');
+
+        $pendingRatingsCount = Purchase::whereHas('item', function ($itemQuery) use ($user) {
+            $itemQuery->where('user_id', $user->id);
         })
             ->where('transaction_status', 'buyer_completed')
+            ->whereNull('seller_rated_at')
             ->count();
 
-        $totalUnreadCount = $unreadMessagesCount + $pendingRatingsCount;
+        $totalUnreadCount = $sellerUnreadMessages +  $buyerUnreadMessages + $pendingRatingsCount;
 
         $items = collect();
         $purchases = collect();
@@ -108,13 +117,26 @@ class UserController extends Controller
                 ->withCount([
                     'messages as unread_count' => function ($query) use ($user) {
                         $query->where('sender_id', '!=', $user->id)
-                            ->where('is_read', false);
+                            ->where('is_read', false)
+                            ->where('message_type', '!=', TransactionMessage::TYPE_REVIEW);
                     }
                 ])
                 ->orderByDesc('last_message_at')
                 ->orderByDesc('created_at')
                 ->paginate(8)
                 ->appends(request()->except('page'));
+
+            $transactions->getCollection()->transform(function ($transaction) use ($user) {
+                $hasPendingRating = $transaction->item->user_id === $user->id
+                    && $transaction->transaction_status === 'buyer_completed'
+                    && is_null($transaction->seller_rated_at);
+
+                if ($hasPendingRating) {
+                    $transaction->unread_count += 1;
+                }
+
+                return $transaction;
+            });
         }
         return view('mypage', compact('profile', 'items', 'purchases', 'transactions', 'page',  'averageRating', 'reviewCount', 'totalUnreadCount'));
     }

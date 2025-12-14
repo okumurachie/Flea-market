@@ -115,6 +115,9 @@ class ChatController extends Controller
             if ($purchase->item->user_id !== $currentUserId) {
                 return response()->json(['error' => 'Unauthorized'], 403);
             }
+            if ($purchase->transaction_status !== 'buyer_completed') {
+                return response()->json(['error' => 'Buyer has not completed yet'], 403);
+            }
         } else {
             if ($purchase->user_id !== $currentUserId) {
                 return response()->json(['error' => 'Unauthorized'], 403);
@@ -134,6 +137,7 @@ class ChatController extends Controller
 
             if ($validated['is_seller']) {
                 $purchase->transaction_status = 'completed';
+                $purchase->seller_rated_at = now();
             } else {
                 $purchase->transaction_status = 'buyer_completed';
 
