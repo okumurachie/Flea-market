@@ -5,7 +5,8 @@
 ### Docker ビルド
 
 - 1.git clone git@github.com:okumurachie/Flea-market.git
-- 2.docker-compose up -d --build
+- 2.cd Flea-market
+- 3.docker-compose up -d --build
 
 ### laravel 環境構築
 
@@ -27,9 +28,27 @@
         STRIPE_SECRET_KEY=sk_test_*************
         STRIPE_WEBHOOK_SECRET=whsec_*************
 
-- 4.php artisan key:generate
-- 5.php artisan migrate
-- 6.php artisan db:seed
+- 4.cp .env.testing.example .env.testing(テスト用：.env.testingexample ファイルから.env.testing を作成し、環境変数を変更)
+
+        DB_CONNECTION=mysql
+        DB_HOST=mysql
+        DB_PORT=3306
+        DB_DATABASE=demo_test
+        DB_USERNAME=root
+        DB_PASSWORD=root
+
+        MAIL_MAILER=smtp
+        MAIL_HOST=mailhog
+        MAIL_PORT=1025
+        MAIL_FROM_ADDRESS=test@example.com
+
+        STRIPE_PUBLIC_KEY=pk_test_*************
+        STRIPE_SECRET_KEY=sk_test_*************
+        STRIPE_WEBHOOK_SECRET=whsec_*************
+
+- 5.php artisan key:generate
+- 6.php artisan migrate
+- 7.php artisan db:seed
 
 ## 使用技術（実行環境）
 
