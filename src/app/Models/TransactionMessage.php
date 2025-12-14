@@ -23,10 +23,9 @@ class TransactionMessage extends Model
         'is_read' => 'boolean',
     ];
 
-    // メッセージタイプの定数
-    const TYPE_TEXT = 'text';          // 通常のメッセージ
-    const TYPE_COMPLETION = 'completion'; // 取引完了通知
-    const TYPE_REVIEW = 'review';      // 評価
+    const TYPE_TEXT = 'text';
+    const TYPE_COMPLETION = 'completion';
+    const TYPE_REVIEW = 'review';
 
     public function purchase()
     {
