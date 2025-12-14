@@ -568,6 +568,9 @@ html, body {
         position: relative;
         height: auto;
     }
+    .transaction-items {
+        font-size: 18px;
+    }
     .chat-content {
         width: 100%;
         padding: 0 15px;
