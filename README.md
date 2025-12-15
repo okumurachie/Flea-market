@@ -28,7 +28,7 @@
         STRIPE_SECRET_KEY=sk_test_*************
         STRIPE_WEBHOOK_SECRET=whsec_*************
 
-- 4.cp .env.testing.example .env.testing(テスト用：.env.testingexample ファイルから.env.testing を作成し、環境変数を変更)
+- 4.cp .env.testing.example .env.testing(テスト用：.env.testing.example ファイルから.env.testing を作成し、環境変数を変更)
 
         DB_CONNECTION=mysql
         DB_HOST=mysql
@@ -78,7 +78,7 @@
 
 ### name:Test User3
 
-- email:test@example.com
+- email:test3@example.com
 - password:abcd4321
 
 ---
